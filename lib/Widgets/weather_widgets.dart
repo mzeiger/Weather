@@ -172,11 +172,35 @@ class CirclePainter extends CustomPainter {
 
     final Paint linePaint = Paint()
       ..color = Colors.red
+      ..strokeWidth = 3;
+
+    final Paint axesPaint = Paint()
+      ..color = Colors.blue
       ..strokeWidth = 2;
 
-    double angle = (weather.windDeg!.toDouble() - 90) * (pi / 180.0);
+    double angle = (90.0 - 90.0) * (pi / 180.0);
     double pointX = center.dx + radius * cos(angle);
     double pointY = center.dy + radius * sin(angle);
+    canvas.drawLine(center, Offset(pointX, pointY), axesPaint);
+
+    angle = (180.0 - 90.0) * (pi / 180.0);
+    pointX = center.dx + radius * cos(angle);
+    pointY = center.dy + radius * sin(angle);
+    canvas.drawLine(center, Offset(pointX, pointY), axesPaint);
+
+    angle = (270.0 - 90.0) * (pi / 180.0);
+    pointX = center.dx + radius * cos(angle);
+    pointY = center.dy + radius * sin(angle);
+    canvas.drawLine(center, Offset(pointX, pointY), axesPaint);
+
+    angle = (360.0 - 90.0) * (pi / 180.0);
+    pointX = center.dx + radius * cos(angle);
+    pointY = center.dy + radius * sin(angle);
+    canvas.drawLine(center, Offset(pointX, pointY), axesPaint);
+
+    angle = (weather.windDeg!.toDouble() - 90) * (pi / 180.0);
+    pointX = center.dx + radius * cos(angle);
+    pointY = center.dy + radius * sin(angle);
 
     canvas.drawCircle(Offset(pointX, pointY), 2.0, pointPaint);
     canvas.drawLine(center, Offset(pointX, pointY), linePaint);
