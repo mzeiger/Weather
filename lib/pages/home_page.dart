@@ -113,14 +113,18 @@ class _HomePageState extends State<HomePage> {
                     .getWeatherByZip(zipController.text)
                     .then((dataMap) {
                   if (dataMap['cod'] != 200) {
-                    showErrorDialog(
-                        context, "${dataMap['cod']}: ${dataMap['message']}");
+                    if (mounted) {
+                      showErrorDialog(
+                          context, "${dataMap['cod']}: ${dataMap['message']}");
+                    }
                   } else {
                     WeatherModel weather = populateModel(weatherModel, dataMap);
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) => WeatherPage(weather: weather)));
+                    if (mounted) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => WeatherPage(weather: weather)));
+                    }
                   }
                 });
               }
@@ -178,14 +182,18 @@ class _HomePageState extends State<HomePage> {
                     .getWeatherByCity(cityController.text)
                     .then((dataMap) {
                   if (dataMap['cod'] != 200) {
-                    showErrorDialog(
-                        context, "${dataMap['cod']}: ${dataMap['message']}");
+                    if (mounted) {
+                      showErrorDialog(
+                          context, "${dataMap['cod']}: ${dataMap['message']}");
+                    }
                   } else {
                     WeatherModel weather = populateModel(weatherModel, dataMap);
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) => WeatherPage(weather: weather)));
+                    if (mounted) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => WeatherPage(weather: weather)));
+                    }
                   }
                 });
               }
@@ -229,19 +237,22 @@ class _HomePageState extends State<HomePage> {
                           .then(
                         (dataMap) {
                           if (dataMap['cod'] != 200) {
-                            showErrorDialog(context,
-                                "${dataMap['cod']}: ${dataMap['message']}");
+                            if (mounted) {
+                              showErrorDialog(context,
+                                  "${dataMap['cod']}: ${dataMap['message']}");
+                            }
                           } else {
                             WeatherModel weather =
                                 populateModel(weatherModel, dataMap);
-
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => WeatherLLPage(
-                                    geoModel: geo, weather: weather),
-                              ),
-                            );
+                            if (mounted) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => WeatherLLPage(
+                                      geoModel: geo, weather: weather),
+                                ),
+                              );
+                            }
                           }
                         },
                       );

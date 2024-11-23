@@ -66,7 +66,7 @@ Widget keyInfo(WeatherModel weather) {
             const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
+              children: <Widget>[
                 Text(
                   'Wind Direction: ${weather.windDeg}°',
                   style: textStyle(20),
@@ -178,6 +178,7 @@ class CirclePainter extends CustomPainter {
       ..color = Colors.blue
       ..strokeWidth = 2;
 
+    // the next four draw the N/S and E/W lines
     double angle = (90.0 - 90.0) * (pi / 180.0);
     double pointX = center.dx + radius * cos(angle);
     double pointY = center.dy + radius * sin(angle);
@@ -198,6 +199,7 @@ class CirclePainter extends CustomPainter {
     pointY = center.dy + radius * sin(angle);
     canvas.drawLine(center, Offset(pointX, pointY), axesPaint);
 
+    // now we draw the arrow signifying the wind direction
     angle = (weather.windDeg!.toDouble() - 90) * (pi / 180.0);
     pointX = center.dx + radius * cos(angle);
     pointY = center.dy + radius * sin(angle);
