@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:weather/helpers/location_permission.dart';
 import 'package:weather/models/geo_model.dart';
 import 'package:weather/models/weather_model.dart';
 import 'package:weather/pages/gps_page.dart';
@@ -24,6 +25,21 @@ class _HomePageState extends State<HomePage> {
   final _zipRegExp = RegExp(r'\d\d\d\d\d');
   WeatherModel weatherModel = WeatherModel();
   GeoModel geoModel = GeoModel();
+  bool _canGetWeatherByCurrentLocation = true;
+
+  @override
+  void initState() {
+    super.initState();
+    requestLocationPermission().then((val) {
+      setState(() {
+        if (val) {
+          _canGetWeatherByCurrentLocation = true;
+        } else {
+          _canGetWeatherByCurrentLocation = false;
+        }
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -230,6 +246,9 @@ class _HomePageState extends State<HomePage> {
         children: [
           TextButton(
             onPressed: () {
+              if (!_canGetWeatherByCurrentLocation) {
+                return;
+              }
               Navigator.push(
                   context, MaterialPageRoute(builder: (_) => const WaitPage()));
               Geolocator.getCurrentPosition().then(
@@ -282,9 +301,11 @@ class _HomePageState extends State<HomePage> {
             },
             style: const ButtonStyle(
                 backgroundColor: WidgetStatePropertyAll(Colors.blue)),
-            child: const Text(
-              'Get Current Weather at this Location',
-              style: TextStyle(color: Colors.white),
+            child: Text(
+              _canGetWeatherByCurrentLocation
+                  ? 'Get Current Weather at this Location'
+                  : 'Location services are disabled',
+              style: const TextStyle(color: Colors.white),
             ),
           ),
         ],

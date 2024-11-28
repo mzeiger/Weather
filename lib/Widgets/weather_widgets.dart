@@ -161,7 +161,7 @@ Widget _sunsetInfo(BuildContext context, WeatherModel weather) {
         Column(
           children: <Widget>[
             Text(
-              'Sunrise',
+              'Sunset',
               style: textStyle(15),
             ),
             Image.asset('assets/images/sunset.png', height: 60, width: 60),

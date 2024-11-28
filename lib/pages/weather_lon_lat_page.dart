@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weather/Widgets/weather_widgets.dart';
+import 'package:weather/helpers/state_abreviations.dart';
 import 'package:weather/models/geo_model.dart';
 import 'package:weather/models/weather_model.dart';
 
@@ -66,7 +67,7 @@ class WeatherLLPage extends StatelessWidget {
       children: [
         Text('${geoModel.street}', style: textStyle(20)),
         Text(
-          '${geoModel.locality}, ${geoModel.administrativeArea}',
+          '${geoModel.locality}, ${StateAbreviations.getStateAbrevaition(geoModel.administrativeArea!)} ${geoModel.postalCode}',
           style: textStyle(20),
         ),
         Text(
