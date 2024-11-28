@@ -23,4 +23,11 @@ const String vcKey = 'S5C4BVLDLCF9VK4HREF57Z6WR';
 const String vcLatLonUrl_1 =
     'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/';
 
+const String vcZip =
+    'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/80921/2024-11-27?key=S5C4BVLDLCF9VK4HREF57Z6WR&include=current,days';
+
 const String keyForUrl = '?key=S5C4BVLDLCF9VK4HREF57Z6WR';
+
+// Sunrise & sunset Url
+const String sunrisSunsetUrl =
+    'https://api.sunrisesunset.io/json?'; // ad lat={latitude}&lng={longitude}

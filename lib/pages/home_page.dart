@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:weather/models/geo_model.dart';
 import 'package:weather/models/weather_model.dart';
@@ -111,20 +112,26 @@ class _HomePageState extends State<HomePage> {
                 FocusScope.of(context).unfocus();
                 weatherModel
                     .getWeatherByZip(zipController.text)
-                    .then((dataMap) {
-                  if (dataMap['cod'] != 200) {
+                    .then((weatherResponse) {
+                  if (weatherResponse['cod'] != 200) {
                     if (mounted) {
-                      showErrorDialog(
-                          context, "${dataMap['cod']}: ${dataMap['message']}");
+                      showErrorDialog(context,
+                          "${weatherResponse['cod']}: ${weatherResponse['message']}");
                     }
                   } else {
-                    WeatherModel weather = populateModel(weatherModel, dataMap);
-                    if (mounted) {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => WeatherPage(weather: weather)));
-                    }
+                    geoModel
+                        .getSunriseSunset(weatherResponse['coord']['lat'],
+                            weatherResponse['coord']['lon'])
+                        .then((geo) {
+                      WeatherModel weather = populateWeatherModel(
+                          weatherModel, weatherResponse, geo);
+                      if (mounted) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => WeatherPage(weather: weather)));
+                      }
+                    });
                   }
                 });
               }
@@ -180,20 +187,26 @@ class _HomePageState extends State<HomePage> {
                 FocusScope.of(context).unfocus();
                 weatherModel
                     .getWeatherByCity(cityController.text)
-                    .then((dataMap) {
-                  if (dataMap['cod'] != 200) {
+                    .then((weatherResponse) {
+                  if (weatherResponse['cod'] != 200) {
                     if (mounted) {
-                      showErrorDialog(
-                          context, "${dataMap['cod']}: ${dataMap['message']}");
+                      showErrorDialog(context,
+                          "${weatherResponse['cod']}: ${weatherResponse['message']}");
                     }
                   } else {
-                    WeatherModel weather = populateModel(weatherModel, dataMap);
-                    if (mounted) {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => WeatherPage(weather: weather)));
-                    }
+                    geoModel
+                        .getSunriseSunset(weatherResponse['coord']['lat'],
+                            weatherResponse['coord']['lon'])
+                        .then((geo) {
+                      WeatherModel weather = populateWeatherModel(
+                          weatherModel, weatherResponse, geo);
+                      if (mounted) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => WeatherPage(weather: weather)));
+                      }
+                    });
                   }
                 });
               }
@@ -219,41 +232,47 @@ class _HomePageState extends State<HomePage> {
             onPressed: () {
               Navigator.push(
                   context, MaterialPageRoute(builder: (_) => const WaitPage()));
-              // _getCurrentLocation();
               Geolocator.getCurrentPosition().then(
                 (currentPosition) {
+                  // now have lat and long
                   geoModel
                       .getLocationByLatLon(
                           currentPosition.latitude, currentPosition.longitude)
                       .then(
                     (geoMap) {
-                      GeoModel geo = populateGeoModel(geoModel, geoMap);
-                      // weatherOnecallModel
-                      //     .getWeatherByOnecall(
-                      //         currentPosition.latitude, currentPosition.longitude)
-                      weatherModel
-                          .getWeatherByCurrentLoaction(currentPosition.latitude,
+                      geoModel
+                          .getSunriseSunset(currentPosition.latitude,
                               currentPosition.longitude)
                           .then(
-                        (dataMap) {
-                          if (dataMap['cod'] != 200) {
-                            if (mounted) {
-                              showErrorDialog(context,
-                                  "${dataMap['cod']}: ${dataMap['message']}");
-                            }
-                          } else {
-                            WeatherModel weather =
-                                populateModel(weatherModel, dataMap);
-                            if (mounted) {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => WeatherLLPage(
-                                      geoModel: geo, weather: weather),
-                                ),
-                              );
-                            }
-                          }
+                        (sun) {
+                          GeoModel geo =
+                              populateGeoModel(geoModel, geoMap, sun);
+                          weatherModel
+                              .getWeatherByCurrentLoaction(
+                                  currentPosition.latitude,
+                                  currentPosition.longitude)
+                              .then(
+                            (weatherResponse) {
+                              if (weatherResponse['cod'] != 200) {
+                                if (mounted) {
+                                  showErrorDialog(context,
+                                      "${weatherResponse['cod']}: ${weatherResponse['message']}");
+                                }
+                              } else {
+                                WeatherModel weather = populateWeatherModel(
+                                    weatherModel, weatherResponse, sun);
+                                if (mounted) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => WeatherLLPage(
+                                          geoModel: geo, weather: weather),
+                                    ),
+                                  );
+                                }
+                              }
+                            },
+                          );
                         },
                       );
                     },
@@ -298,7 +317,8 @@ class _HomePageState extends State<HomePage> {
   //   });
   // }
 
-  WeatherModel populateModel(WeatherModel model, Map<String, dynamic> data) {
+  WeatherModel populateWeatherModel(
+      WeatherModel model, Map<String, dynamic> data, Map<String, dynamic> geo) {
     try {
       model.weatherMain = data['weather'][0]['main'] ?? '';
       model.weatherDescription = data['weather'][0]['description'] ?? '';
@@ -327,16 +347,26 @@ class _HomePageState extends State<HomePage> {
       model.coordLongitude =
           data['coord']['lon'].toDouble() ?? -1000000000000.0;
       model.date = data['dt'] ?? -1000000000000;
+      model.sunrise = geo['results']['sunrise'];
+      model.sunset = geo['results']['sunset'];
     } catch (e) {
       // print(e.toString());
     }
     return model;
   }
 
-  GeoModel populateGeoModel(GeoModel model, data) {
-    model.name = data['name'];
-    model.country = data['country'];
-    model.state = data['state'];
+  GeoModel populateGeoModel(
+      GeoModel model, Placemark placeMark, Map<String, dynamic> sun) {
+    model.administrativeArea = placeMark.administrativeArea;
+    model.country = placeMark.country;
+    model.isoCountryCode = placeMark.isoCountryCode;
+    model.locality = placeMark.locality;
+    model.postalCode = placeMark.postalCode;
+    model.street = placeMark.street;
+    model.subAdministrativeArea = placeMark.subAdministrativeArea;
+    model.thoroughfare = placeMark.thoroughfare;
+    model.sunrise = sun['results']['sunrise'];
+    model.sunset = sun['results']['sunset'];
     return model;
   }
 

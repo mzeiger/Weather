@@ -1,23 +1,55 @@
+import 'package:geocoding/geocoding.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:weather/api/api.dart';
 
 class GeoModel {
-  String? name, state, country;
+  String? administrativeArea; //state
+  String? country; // i.e. United stateds of america
+  String? isoCountryCode; // i.e. US
+  String? locality; // city name
+  String? street; // whole house number and street
+  String? postalCode;
+  String? subAdministrativeArea; // i.e. county
+  String? thoroughfare; // street without house numner
+  String? sunrise, sunset; // these come from a different query
 
-  GeoModel({name, state, country});
+  GeoModel(
+      {administrativeArea, //state
+      country, // i.e. United stateds of america
+      isoCountryCode, // i.e. US
+      locality, // city name
+      street, // whole house number and street
+      postalCode,
+      subAdministrativeArea, // i.e. county
+      thoroughfare,
+      sunrise,
+      sunset});
 
-  Future<Map<String, dynamic>> getLocationByLatLon(
-      double lat, double lon) async {
+  Future<Placemark> getLocationByLatLon(double lat, double lon) async {
     try {
-      String url =
-          "https://api.openweathermap.org/geo/1.0/reverse?lat=$lat&lon=$lon&limit=5&appid=$appId";
-      final response = await http.get(Uri.parse((url)));
-      List geoData = jsonDecode(response.body);
-      Map<String, dynamic> geoInfo = geoData[0];
-      return geoInfo;
+      List<Placemark> placemarks = await placemarkFromCoordinates(lat, lon);
+
+      // String url =
+      //     "https://api.openweathermap.org/geo/1.0/reverse?lat=$lat&lon=$lon&limit=5&appid=$appId";
+      // final response = await http.get(Uri.parse((url)));
+      // List geoData = jsonDecode(response.body);
+      // Map<String, dynamic> geoInfo = geoData[0];
+      // return geoInfo;
+
+      return placemarks[0];
     } catch (e) {
-      return {"x", e} as Map<String, dynamic>;
+      throw (Exception(e.toString()));
+    }
+  }
+
+  Future<Map<String, dynamic>> getSunriseSunset(double lat, double lon) async {
+    try {
+      String url = 'https://api.sunrisesunset.io/json?lat=$lat&lng=$lon';
+      final response = await http.get(Uri.parse(url));
+      Map<String, dynamic> sun = jsonDecode(response.body);
+      return sun;
+    } catch (e) {
+      throw Exception(e);
     }
   }
 }

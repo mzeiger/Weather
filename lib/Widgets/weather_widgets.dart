@@ -26,7 +26,7 @@ Widget imageFromOpenWeather(WeatherModel weather) {
   );
 }
 
-Widget keyInfo(WeatherModel weather) {
+Widget keyInfo(BuildContext context, WeatherModel weather) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 15),
     child: Center(
@@ -43,41 +43,135 @@ Widget keyInfo(WeatherModel weather) {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            Text(
-              'Min Temp: ${weather.mainTempMin}°F',
-              style: textStyle(20),
-            ),
-            Text(
-              'Max Temp: ${weather.mainTempMax}°F',
-              style: textStyle(20),
-            ),
-            Text(
-              'Humidity: ${weather.mainHumidity}',
-              style: textStyle(20),
-            ),
-            Text(
-              'Wind: ${weather.windSpeed} mph',
-              style: textStyle(20),
-            ),
-            Text(
-              'Wind Gust: ${weather.windGust} mph',
-              style: textStyle(20),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                _moreTemperatureInfo(context, weather),
+                _windInfo(context, weather),
+              ],
             ),
             const SizedBox(height: 10),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text(
-                  'Wind Direction: ${weather.windDeg}°',
-                  style: textStyle(20),
-                ),
-                const SizedBox(width: 20),
-                windDirectionPointer(weather),
+                _sunriseInfo(context, weather),
+                _sunsetInfo(context, weather),
               ],
-            )
+            ),
+            // Container(
+            //   child: Image.asset('assets/images/sunrise.png',
+            //       height: 50, width: 50),
+            // )
           ],
         ),
       ),
+    ),
+  );
+}
+
+Widget _moreTemperatureInfo(BuildContext context, WeatherModel weather) {
+  return Container(
+    height: MediaQuery.of(context).size.height * 0.15,
+    width: MediaQuery.of(context).size.width * .4,
+    decoration: boxDecoration(),
+    child: Column(
+      children: <Widget>[
+        Text(
+          'Min: ${weather.mainTempMin}°F',
+          style: textStyle(15),
+        ),
+        Text(
+          'Max: ${weather.mainTempMax}°F',
+          style: textStyle(15),
+        ),
+        Text(
+          'Humidity: ${weather.mainHumidity}',
+          style: textStyle(15),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget _windInfo(BuildContext context, WeatherModel weather) {
+  return Container(
+    height: MediaQuery.of(context).size.height * 0.15,
+    width: MediaQuery.of(context).size.width * .4,
+    decoration: boxDecoration(),
+    child: Column(
+      children: [
+        Text(
+          'Wind: ${weather.windSpeed} mph',
+          style: textStyle(14),
+        ),
+        Text(
+          'Wind Gust: ${weather.windGust} mph',
+          style: textStyle(14),
+        ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              'Wind Direction: ${weather.windDeg}°',
+              style: textStyle(14),
+            ),
+            windDirectionPointer(weather),
+          ],
+        )
+      ],
+    ),
+  );
+}
+
+Widget _sunriseInfo(BuildContext context, WeatherModel weather) {
+  return Container(
+    height: MediaQuery.of(context).size.height * 0.15,
+    width: MediaQuery.of(context).size.width * .4,
+    decoration: boxDecoration(),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Column(
+          children: <Widget>[
+            Text(
+              'Sunrise',
+              style: textStyle(15),
+            ),
+            Image.asset('assets/images/sunrise.png', height: 60, width: 60),
+            Text(
+              '${weather.sunrise}',
+              style: textStyle(15),
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
+}
+
+Widget _sunsetInfo(BuildContext context, WeatherModel weather) {
+  return Container(
+    height: MediaQuery.of(context).size.height * 0.15,
+    width: MediaQuery.of(context).size.width * .4,
+    decoration: boxDecoration(),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Column(
+          children: <Widget>[
+            Text(
+              'Sunrise',
+              style: textStyle(15),
+            ),
+            Image.asset('assets/images/sunset.png', height: 60, width: 60),
+            Text(
+              '${weather.sunset}',
+              style: textStyle(15),
+            ),
+          ],
+        ),
+      ],
     ),
   );
 }
@@ -119,12 +213,6 @@ Widget timeInfo(WeatherModel weather) {
               Text(
                   'Time: ${Formulas.getTime(weather.date!, weather.timezone!)}',
                   style: textStyle(10)),
-              // Text(
-              //     'Sunrise: ${_getSunRiseSunset(weather.sysSunrise!, weather.timezone!)}',
-              //     style: textStyle(10)),
-              // Text(
-              //     'Sunset: ${_getSunRiseSunset(weather.sysSunSet!, weather.timezone!)}',
-              // style: textStyle(10)),
             ],
           ),
         ),
@@ -137,6 +225,20 @@ TextStyle textStyle(double size) {
   return TextStyle(
     fontSize: size,
     color: const Color.fromARGB(255, 8, 95, 85),
+  );
+}
+
+BoxDecoration boxDecoration() {
+  return BoxDecoration(
+    color: const Color.fromARGB(255, 201, 212, 210),
+    borderRadius: BorderRadius.circular(10),
+    boxShadow: [
+      BoxShadow(
+          color: const Color.fromARGB(255, 67, 70, 69).withOpacity(0.5),
+          offset: const Offset(15, 15),
+          blurRadius: 3,
+          spreadRadius: -10)
+    ],
   );
 }
 

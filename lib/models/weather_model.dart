@@ -15,6 +15,7 @@ class WeatherModel {
   String? name; // the city name
   int? timezone;
   int? date;
+  String? sunrise, sunset;
 
   WeatherModel(
       {weatherMain,
@@ -36,7 +37,9 @@ class WeatherModel {
       timezone,
       coordLatitude,
       coordLongitude,
-      date});
+      date,
+      sunrise,
+      sunset});
 
   factory WeatherModel.fromJson(Map<String, dynamic> jsonData) {
     return WeatherModel(

@@ -50,7 +50,7 @@ class WeatherLLPage extends StatelessWidget {
                   const SizedBox(height: 10),
                   imageFromOpenWeather(weather),
                   const SizedBox(height: 10),
-                  keyInfo(weather),
+                  keyInfo(context, weather),
                   const SizedBox(height: 10),
                 ],
               ),
@@ -64,11 +64,15 @@ class WeatherLLPage extends StatelessWidget {
   Widget _location() {
     return Column(
       children: [
-        Text('${geoModel.name}', style: textStyle(20)),
+        Text('${geoModel.street}', style: textStyle(20)),
         Text(
-          '${geoModel.state}, ${geoModel.country}',
-          style: textStyle(15),
+          '${geoModel.locality}, ${geoModel.administrativeArea}',
+          style: textStyle(20),
         ),
+        Text(
+          '${geoModel.country}',
+          style: textStyle(20),
+        )
       ],
     );
   }
