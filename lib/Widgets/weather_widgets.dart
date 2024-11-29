@@ -59,10 +59,6 @@ Widget keyInfo(BuildContext context, WeatherModel weather) {
                 _sunsetInfo(context, weather),
               ],
             ),
-            // Container(
-            //   child: Image.asset('assets/images/sunrise.png',
-            //       height: 50, width: 50),
-            // )
           ],
         ),
       ),
@@ -106,14 +102,14 @@ Widget _windInfo(BuildContext context, WeatherModel weather) {
           style: textStyle(14),
         ),
         Text(
-          'Wind Gust: ${weather.windGust} mph',
+          'Gust: ${weather.windGust} mph',
           style: textStyle(14),
         ),
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'Wind Direction: ${weather.windDeg}°',
+              'Direction: ${weather.windDeg}°',
               style: textStyle(14),
             ),
             windDirectionPointer(weather),
