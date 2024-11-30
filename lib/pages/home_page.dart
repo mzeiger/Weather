@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
@@ -327,16 +328,6 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
-  // void _getCurrentLocation() {
-  //   Geolocator.getCurrentPosition().then((Position position) {
-  //     _currentPosition = position;
-  //   }).catchError((e) {
-  //     if (kDebugMode) {
-  //       print('Location error: $e');
-  //     }
-  //   });
-  // }
 
   WeatherModel populateWeatherModel(
       WeatherModel model, Map<String, dynamic> data, Map<String, dynamic> geo) {

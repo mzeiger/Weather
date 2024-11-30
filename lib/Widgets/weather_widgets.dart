@@ -43,6 +43,10 @@ Widget keyInfo(BuildContext context, WeatherModel weather) {
                 fontWeight: FontWeight.bold,
               ),
             ),
+            Text(
+              'Feels Like: ${weather.mainFeelsLike}°',
+              style: textStyle(18),
+            ),
             const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -70,6 +74,7 @@ Widget _moreTemperatureInfo(BuildContext context, WeatherModel weather) {
   return Container(
     height: MediaQuery.of(context).size.height * 0.15,
     width: MediaQuery.of(context).size.width * .4,
+    padding: const EdgeInsets.only(top: 5),
     decoration: boxDecoration(),
     child: Column(
       children: <Widget>[
@@ -94,6 +99,7 @@ Widget _windInfo(BuildContext context, WeatherModel weather) {
   return Container(
     height: MediaQuery.of(context).size.height * 0.15,
     width: MediaQuery.of(context).size.width * .4,
+    padding: const EdgeInsets.only(top: 3),
     decoration: boxDecoration(),
     child: Column(
       children: [
