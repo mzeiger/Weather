@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
@@ -10,8 +9,6 @@ import 'package:weather/pages/gps_page.dart';
 import 'package:weather/pages/wait_page.dart';
 import 'package:weather/pages/weather_lon_lat_page.dart';
 import 'package:weather/pages/weather_page.dart';
-
-// Position? _currentPosition;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

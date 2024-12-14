@@ -8,7 +8,7 @@ Widget imageFromOpenWeather(WeatherModel weather) {
   return Column(
     children: [
       Container(
-        color: Colors.lightBlue.withOpacity(0.4),
+        color: Colors.lightBlue.withValues(alpha: .4),
         child: ClipRect(
           child: Align(
             widthFactor: 0.5,
@@ -182,7 +182,7 @@ Widget header(WeatherModel weather) {
   return Column(
     children: [
       Text(
-        weather.name!,
+        '${weather.name!}, ${weather.sysCountry}',
         style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
       ),
       Text(
@@ -236,7 +236,7 @@ BoxDecoration boxDecoration() {
     borderRadius: BorderRadius.circular(10),
     boxShadow: [
       BoxShadow(
-          color: const Color.fromARGB(255, 67, 70, 69).withOpacity(0.5),
+          color: const Color.fromARGB(255, 67, 70, 69).withValues(alpha: .5),
           offset: const Offset(15, 15),
           blurRadius: 3,
           spreadRadius: -10)
@@ -248,7 +248,7 @@ Widget windDirectionPointer(WeatherModel weather) {
   return Container(
     width: 25,
     height: 25,
-    color: Colors.grey.withOpacity(.2),
+    color: Colors.grey.withValues(alpha: .2),
     child: CustomPaint(
       foregroundPainter: CirclePainter(weather: weather),
     ),

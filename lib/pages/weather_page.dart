@@ -37,13 +37,10 @@ class WeatherPage extends StatelessWidget {
                   ]),
             ),
             child: Column(
+              spacing: 15,
               children: <Widget>[
-                const SizedBox(height: 20),
                 header(weather),
-                const SizedBox(height: 10),
                 imageFromOpenWeather(weather),
-                const SizedBox(height: 5),
-                const SizedBox(height: 10),
                 keyInfo(context, weather),
                 // timeInfo(),
               ],
