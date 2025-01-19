@@ -118,7 +118,10 @@ class StateAbreviations {
     for (final val in result) {
       finalList.add(val["abreviation"]);
     }
-
-    return finalList[0];
+    if (finalList.isNotEmpty) {
+      return finalList[0];
+    } else {
+      return stateName;
+    }
   }
 }
