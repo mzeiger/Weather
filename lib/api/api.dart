@@ -15,7 +15,7 @@ const String iconUrl = "https://openweathermap.org/img/wn/";
 
 // add  lat={lat}&lon={lon}' to end
 const String locationUrl =
-    'https://api.openweathermap.org/data/2.5/weather?apiid=3a8597165e9fca99a42f17b48547a554&units=imperial&';
+    'https://api.openweathermap.org/data/2.5/weather?appid=3a8597165e9fca99a42f17b48547a554&units=imperial&';
 
 // visual crossing appId
 // To form url: url = 'vcLatLonUrl_1${lat},${lon}keyForUrl'
