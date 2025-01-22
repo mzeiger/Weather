@@ -5,10 +5,28 @@ import 'package:weather/api/api.dart';
 
 class ForecastModel {
   String? datetime, description, sunrise, sunset, source;
-  double? tempmax, tempmin;
+  double? tempmax,
+      tempmin,
+      cloudcover,
+      humidity,
+      latitude,
+      longitude,
+      precipprob,
+      uvindex;
 
   ForecastModel(
-      {source, datetime, description, sunrise, sunset, tempmax, tempmin});
+      {source,
+      datetime,
+      description,
+      sunrise,
+      sunset,
+      tempmax,
+      tempmin,
+      cloudcover,
+      precipprob,
+      humidity,
+      latitude,
+      longitude});
 
   Future<Map<String, dynamic>> getForecast(
       double latitude, double longitude) async {

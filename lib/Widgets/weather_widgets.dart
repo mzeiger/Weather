@@ -144,7 +144,7 @@ Widget _sunriseInfo(BuildContext context, WeatherModel weather) {
             ),
             Image.asset('assets/images/sunrise.png', height: 60, width: 60),
             Text(
-              '${weather.sunrise}',
+              weather.sunrise == null ? 'Not Specified' : '${weather.sunrise}',
               style: textStyle(15),
             ),
           ],
@@ -170,7 +170,7 @@ Widget _sunsetInfo(BuildContext context, WeatherModel weather) {
             ),
             Image.asset('assets/images/sunset.png', height: 60, width: 60),
             Text(
-              '${weather.sunset}',
+              weather.sunset == null ? 'Not Specified' : '${weather.sunset}',
               style: textStyle(15),
             ),
           ],
@@ -323,19 +323,23 @@ Widget forecastButton(context, double lat, double lon) {
       onPressed: () {
         ForecastModel forecastModel = ForecastModel();
         forecastModel.getForecast(lat, lon).then((data) {
-          List<ForecastModel> forecasts = forecastCollector(data);
+          List<ForecastModel> forecasts = forecastCollector(data, lat, lon);
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (_) => ForecastPage(forecasts: forecasts)));
+                  builder: (_) => ForecastPage(
+                        forecasts: forecasts,
+                        lat: lat,
+                        lon: lon,
+                      )));
         });
       },
       child: const Text('Fifteen Day Forecast'));
 }
 
-List<ForecastModel> forecastCollector(Map<String, dynamic> data) {
+List<ForecastModel> forecastCollector(
+    Map<String, dynamic> data, double lat, double lon) {
   List<ForecastModel> forecasts = [];
-  // days = value['days'];
   for (var day in data['days']) {
     if (day['source'] == 'fcst') {
       ForecastModel singleForecast = ForecastModel();
@@ -344,11 +348,16 @@ List<ForecastModel> forecastCollector(Map<String, dynamic> data) {
       singleForecast.description = day['description'];
       singleForecast.sunrise = day['sunrise'];
       singleForecast.sunset = day['sunset'];
-      singleForecast.tempmax = day['tempmax'];
-      singleForecast.tempmin = day['tempmin'];
+      singleForecast.tempmax = day['tempmax'] as double;
+      singleForecast.tempmin = day['tempmin'] as double;
+      singleForecast.cloudcover = day['cloudcover'] as double;
+      singleForecast.humidity = day['humidity'] as double;
+      singleForecast.precipprob = day['precipprob'] as double;
+      singleForecast.uvindex = day['uvindex'] as double;
+      singleForecast.latitude = lat;
+      singleForecast.longitude = lon;
       forecasts.add(singleForecast);
     }
   }
-
   return forecasts;
 }

@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:weather/models/forecast_model.dart';
+import 'package:weather/pages/forecast_day_details_page.dart';
 
 class ForecastPage extends StatelessWidget {
   final List<ForecastModel> forecasts;
-  const ForecastPage({super.key, required this.forecasts});
+  final double lat, lon;
+
+  const ForecastPage(
+      {super.key,
+      required this.forecasts,
+      required this.lat,
+      required this.lon});
 
   @override
   Widget build(BuildContext context) {
@@ -20,14 +27,24 @@ class ForecastPage extends StatelessWidget {
               return Padding(
                 padding: const EdgeInsets.fromLTRB(8, 4, 8, 2),
                 child: GestureDetector(
-                  // onDoubleTap: () => print(forecasts[index].datetime),
+                  onDoubleTap: () => {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) =>
+                            DayDetailsForForecast(dayForecast: forecasts[index]
+                                // lat: lat,
+                                // lon: lon,
+                                ),
+                      ),
+                    )
+                  },
                   child: Card(
                     elevation: 10,
                     color: Colors.lightBlueAccent,
                     child: Column(
                       children: [
                         Text(
-                          //'Date: ${forecasts[index].datetime}',
                           datetimeStringToNewFormat(forecasts[index].datetime!),
                           textAlign: TextAlign.center,
                           style: const TextStyle(
@@ -45,6 +62,20 @@ class ForecastPage extends StatelessWidget {
                           children: [
                             Text('Sunrise: ${forecasts[index].sunrise}'),
                             Text('Sunset: ${forecasts[index].sunset}'),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text('Humidity: ${forecasts[index].humidity}'),
+                            Text('UV Index: ${forecasts[index].uvindex}')
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text('Cloud Cover: ${forecasts[index].cloudcover}'),
+                            Text('Precip Prob: ${forecasts[index].precipprob}%')
                           ],
                         ),
                         Padding(
