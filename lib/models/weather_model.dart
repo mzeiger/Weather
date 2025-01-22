@@ -41,31 +41,6 @@ class WeatherModel {
       sunrise,
       sunset});
 
-  factory WeatherModel.fromJson(Map<String, dynamic> jsonData) {
-    return WeatherModel(
-      weatherMain: jsonData['weather'][0]['main'] as String,
-      weatherDescription: jsonData['weather'][0]['description'] as String,
-      weatherIcon: jsonData['weather'][0]['icon'] as String,
-      mainTemmp: jsonData['main']['temp'] as double,
-      mainFeelsLike: jsonData['main']['feels_like'] as double,
-      mainTempMin: jsonData['main']['temp_min'] as double,
-      mainTempMax: jsonData['main']['temp_max'] as double,
-      mainPressure: jsonData['main']['pressure'] as int,
-      mainHumidity: jsonData['main']['humidity'] as int,
-      windSpeed: jsonData['wind']['speed'] as double,
-      windDeg: jsonData['wind']['deg'] as int,
-      windGust: jsonData['wind']['gust'],
-      sysSunrise: jsonData['sys']['sunrise'] as int,
-      sysSunSet: jsonData['sys']['sunset'] as int,
-      sysCountry: jsonData['sys']['country'] as String,
-      name: jsonData['name'] as String,
-      timezone: jsonData['timezone'] as int,
-      coordLatitude: jsonData['coord']['lat'] as double,
-      coordLongitude: jsonData['coord']['lon'] as double,
-      date: jsonData['dt'] as int,
-    );
-  }
-
   Future<Map<String, dynamic>> getWeatherByZip(String zipCode) async {
     try {
       String url = '${urlPrefix}zip=$zipCode&appid=$appId';
@@ -79,7 +54,7 @@ class WeatherModel {
       if (kDebugMode) {
         print('Exception: $e');
       }
-      return {"x", e} as Map<String, dynamic>;
+      return {'x', e} as Map<String, dynamic>;
     }
   }
 
@@ -96,7 +71,7 @@ class WeatherModel {
       if (kDebugMode) {
         print('Exception: $e');
       }
-      return {"x", e} as Map<String, dynamic>;
+      return {'x', e} as Map<String, dynamic>;
     }
   }
 
@@ -118,7 +93,7 @@ class WeatherModel {
       if (kDebugMode) {
         print('Exception: $e');
       }
-      return {"x", e} as Map<String, dynamic>;
+      return {'x', e} as Map<String, dynamic>;
     }
   }
 }

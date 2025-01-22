@@ -28,14 +28,6 @@ class GeoModel {
   Future<Placemark> getLocationByLatLon(double lat, double lon) async {
     try {
       List<Placemark> placemarks = await placemarkFromCoordinates(lat, lon);
-
-      // String url =
-      //     "https://api.openweathermap.org/geo/1.0/reverse?lat=$lat&lon=$lon&limit=5&appid=$appId";
-      // final response = await http.get(Uri.parse((url)));
-      // List geoData = jsonDecode(response.body);
-      // Map<String, dynamic> geoInfo = geoData[0];
-      // return geoInfo;
-
       return placemarks[0];
     } catch (e) {
       throw (Exception(e.toString()));

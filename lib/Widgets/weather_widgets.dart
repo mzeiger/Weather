@@ -2,7 +2,9 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:weather/api/api.dart';
 import 'package:weather/helpers/time_formulars.dart';
+import 'package:weather/models/forecast_model.dart';
 import 'package:weather/models/weather_model.dart';
+import 'package:weather/pages/forecast_page.dart';
 
 Widget imageFromOpenWeather(WeatherModel weather) {
   return Column(
@@ -314,4 +316,39 @@ class CirclePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => false;
+}
+
+Widget forecastButton(context, double lat, double lon) {
+  return ElevatedButton(
+      onPressed: () {
+        ForecastModel forecastModel = ForecastModel();
+        forecastModel.getForecast(lat, lon).then((data) {
+          List<ForecastModel> forecasts = forecastCollector(data);
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => ForecastPage(forecasts: forecasts)));
+        });
+      },
+      child: const Text('Fifteen Day Forecast'));
+}
+
+List<ForecastModel> forecastCollector(Map<String, dynamic> data) {
+  List<ForecastModel> forecasts = [];
+  // days = value['days'];
+  for (var day in data['days']) {
+    if (day['source'] == 'fcst') {
+      ForecastModel singleForecast = ForecastModel();
+      singleForecast.source = day['source'];
+      singleForecast.datetime = day['datetime'];
+      singleForecast.description = day['description'];
+      singleForecast.sunrise = day['sunrise'];
+      singleForecast.sunset = day['sunset'];
+      singleForecast.tempmax = day['tempmax'];
+      singleForecast.tempmin = day['tempmin'];
+      forecasts.add(singleForecast);
+    }
+  }
+
+  return forecasts;
 }

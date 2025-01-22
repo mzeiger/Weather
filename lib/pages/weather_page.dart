@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:weather/Widgets/weather_widgets.dart';
+import 'package:weather/models/forecast_model.dart';
 import 'package:weather/models/weather_model.dart';
 
 class WeatherPage extends StatelessWidget {
   final WeatherModel weather;
 
-  const WeatherPage({required this.weather, super.key});
-
+  WeatherPage({required this.weather, super.key});
+  final ForecastModel forecastModel = ForecastModel();
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -42,6 +43,8 @@ class WeatherPage extends StatelessWidget {
                 header(weather),
                 imageFromOpenWeather(weather),
                 keyInfo(context, weather),
+                forecastButton(
+                    context, weather.coordLatitude!, weather.coordLongitude!)
                 // timeInfo(),
               ],
             ),

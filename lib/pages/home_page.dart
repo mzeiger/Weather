@@ -95,7 +95,7 @@ class _HomePageState extends State<HomePage> {
                 if (_zipRegExp.hasMatch(value!)) {
                   return null;
                 } else {
-                  return "Enter a valid 5-digit zip code";
+                  return 'Enter a valid 5-digit zip code';
                 }
               },
               controller: zipController,
@@ -173,7 +173,7 @@ class _HomePageState extends State<HomePage> {
             child: TextFormField(
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return "Please enter a city";
+                  return 'Please enter a city';
                 } else {
                   return null;
                 }
@@ -378,27 +378,6 @@ class _HomePageState extends State<HomePage> {
     model.sunset = sun['results']['sunset'];
     return model;
   }
-
-  // WeatherOnecallModel populateOnecallModel(WeatherOnecallModel model, data) {
-  //   try {
-  //     model.date = data['current']['dt'];
-  //     model.sunrise = data['current']['sunrise'];
-  //     model.sunset = data['current']['sunset'];
-  //     model.temp = data['current']['temp'];
-  //     model.feelsLike = data['current']['feels_like'];
-  //     model.windSpeed = data['current']['wind_speed'];
-  //     model.windDeg = data['current']['wind_deg'];
-  //     model.main = data['current']['weather'][0]['main'];
-  //     model.description = data['current']['weather'][0]['description'];
-  //     model.icon = data['current']['weather'][0]['icon'];
-  //     model.timezone = data['timezone'];
-  //     model.lat = data['lat'];
-  //     model.lon = data['lon'];
-  //     return model;
-  //   } catch (e) {
-  //     throw Exception('Onecall Model not completed');
-  //   }
-  // }
 
   void showErrorDialog(context, String message) {
     showDialog(
