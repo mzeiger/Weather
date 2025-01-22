@@ -19,35 +19,44 @@ class ForecastPage extends StatelessWidget {
             itemBuilder: (BuildContext context, int index) {
               return Padding(
                 padding: const EdgeInsets.fromLTRB(8, 4, 8, 2),
-                child: Card(
-                  elevation: 10,
-                  color: Colors.lightBlueAccent,
-                  child: Column(
-                    children: [
-                      Text(
-                        //'Date: ${forecasts[index].datetime}',
-                        datetimeStringToNewFormat(forecasts[index].datetime!),
-                        textAlign: TextAlign.center,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Text('Max Temp: ${forecasts[index].tempmax}'),
-                          Text('Min Temp: ${forecasts[index].tempmin}'),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Text('Sunrise: ${forecasts[index].sunrise}'),
-                          Text('Sunset: ${forecasts[index].sunset}'),
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
-                        child: Text('${forecasts[index].description}'),
-                      ),
-                    ],
+                child: GestureDetector(
+                  // onDoubleTap: () => print(forecasts[index].datetime),
+                  child: Card(
+                    elevation: 10,
+                    color: Colors.lightBlueAccent,
+                    child: Column(
+                      children: [
+                        Text(
+                          //'Date: ${forecasts[index].datetime}',
+                          datetimeStringToNewFormat(forecasts[index].datetime!),
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                              fontSize: 18, color: Colors.purple),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text('Max Temp: ${forecasts[index].tempmax}'),
+                            Text('Min Temp: ${forecasts[index].tempmin}'),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text('Sunrise: ${forecasts[index].sunrise}'),
+                            Text('Sunset: ${forecasts[index].sunset}'),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
+                          child: Text(
+                            '${forecasts[index].description}',
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               );
