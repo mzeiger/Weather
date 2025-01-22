@@ -44,7 +44,7 @@ class ForecastPage extends StatelessWidget {
                         ],
                       ),
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
+                        padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
                         child: Text('${forecasts[index].description}'),
                       ),
                     ],
