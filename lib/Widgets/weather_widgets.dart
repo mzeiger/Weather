@@ -1,9 +1,11 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:weather/api/api.dart';
 import 'package:weather/helpers/time_formulars.dart';
 import 'package:weather/models/forecast_model.dart';
 import 'package:weather/models/weather_model.dart';
+import 'package:weather/pages/forecast_day_details_page.dart';
 import 'package:weather/pages/forecast_page.dart';
 
 Widget imageFromOpenWeather(WeatherModel weather) {
@@ -322,8 +324,8 @@ Widget forecastButton(context, double lat, double lon) {
   return ElevatedButton(
       onPressed: () {
         ForecastModel forecastModel = ForecastModel();
-        forecastModel.getForecast(lat, lon).then((data) {
-          List<ForecastModel> forecasts = forecastCollector(data, lat, lon);
+        forecastModel.getDailyForecasts(lat, lon).then((data) {
+          List<ForecastModel> forecasts = forecastDayCollector(data, lat, lon);
           Navigator.push(
               context,
               MaterialPageRoute(
@@ -337,25 +339,66 @@ Widget forecastButton(context, double lat, double lon) {
       child: const Text('Fifteen Day Forecast'));
 }
 
-List<ForecastModel> forecastCollector(
+String datetimeStringToNewFormat(String date) {
+  DateTime dt = DateTime.parse(date);
+  return DateFormat('EEEE MMM d, yyyy').format(dt).toString();
+}
+
+String timeStringToNewFormat(String timeString) {
+  var formatter = DateFormat('jm');
+  DateTime time = DateTime.parse(timeString);
+  return formatter.format(time);
+}
+
+List<ForecastModel> forecastDayCollector(
     Map<String, dynamic> data, double lat, double lon) {
   List<ForecastModel> forecasts = [];
   for (var day in data['days']) {
-    if (day['source'] == 'fcst') {
-      ForecastModel singleForecast = ForecastModel();
-      singleForecast.source = day['source'];
-      singleForecast.datetime = day['datetime'];
-      singleForecast.description = day['description'];
-      singleForecast.sunrise = day['sunrise'];
-      singleForecast.sunset = day['sunset'];
-      singleForecast.tempmax = day['tempmax'] as double;
-      singleForecast.tempmin = day['tempmin'] as double;
-      singleForecast.cloudcover = day['cloudcover'] as double;
-      singleForecast.humidity = day['humidity'] as double;
-      singleForecast.precipprob = day['precipprob'] as double;
-      singleForecast.uvindex = day['uvindex'] as double;
-      singleForecast.latitude = lat;
-      singleForecast.longitude = lon;
+    ForecastModel singleForecast = ForecastModel();
+    singleForecast.source = day['source'];
+    singleForecast.datetime = day['datetime'];
+    singleForecast.description = day['description'];
+    singleForecast.sunrise = day['sunrise'];
+    singleForecast.sunset = day['sunset'];
+    singleForecast.tempmax = day['tempmax'] as double;
+    singleForecast.tempmin = day['tempmin'] as double;
+    singleForecast.cloudcover = day['cloudcover'] as double;
+    singleForecast.humidity = day['humidity'] as double;
+    singleForecast.precipprob = day['precipprob'] as double;
+    singleForecast.uvindex = day['uvindex'] as double;
+    singleForecast.latitude = lat;
+    singleForecast.longitude = lon;
+    singleForecast.hour = ''; // not used for daily, only hourly
+    forecasts.add(singleForecast);
+  }
+  return forecasts;
+}
+
+void hourlyForecastsGestureDoubleTap(
+    context, double lat, double lon, String date) {
+  ForecastModel forecastModel = ForecastModel();
+  forecastModel.getHourlyForecasts(lat, lon, date).then((data) {
+    List<ForecastModel> forecasts = forecastHourCollector(data, date);
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (_) =>
+                DayDetailsForForecast(dayForecasts: forecasts, date: date)));
+  });
+}
+
+List<ForecastModel> forecastHourCollector(
+    Map<String, dynamic> data, String date) {
+  List<ForecastModel> forecasts = [];
+  for (Map<String, dynamic> hour in data['days'][0]['hours']) {
+    ForecastModel singleForecast = ForecastModel();
+    if (hour['source'] == 'fcst') {
+      singleForecast.temp = hour['temp'] as double;
+      singleForecast.humidity = hour['humidity'] as double;
+      singleForecast.conditions = hour['conditions'];
+      singleForecast.datetime =
+          '$date ${hour["datetime"]}'; // even for hour formatting we need real datetimne string
+
       forecasts.add(singleForecast);
     }
   }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:weather/Widgets/weather_widgets.dart';
 import 'package:weather/models/forecast_model.dart';
-import 'package:weather/pages/forecast_day_details_page.dart';
 
 class ForecastPage extends StatelessWidget {
   final List<ForecastModel> forecasts;
@@ -17,7 +16,7 @@ class ForecastPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Forecasts'),
+        title: const Text('Daily Forecasts'),
         backgroundColor: Colors.lightBlue,
       ),
       body: Center(
@@ -28,22 +27,23 @@ class ForecastPage extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(8, 4, 8, 2),
                 child: GestureDetector(
                   onDoubleTap: () => {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) =>
-                            DayDetailsForForecast(dayForecast: forecasts[index]
-                                // lat: lat,
-                                // lon: lon,
-                                ),
-                      ),
-                    )
+                    hourlyForecastsGestureDoubleTap(
+                        context, lat, lon, forecasts[index].datetime!)
                   },
                   child: Card(
                     elevation: 10,
                     color: Colors.lightBlueAccent,
                     child: Column(
                       children: [
+                        index == 0
+                            ? const Text(
+                                'Today',
+                                style: TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 18,
+                                ),
+                              )
+                            : const SizedBox(height: 0),
                         Text(
                           datetimeStringToNewFormat(forecasts[index].datetime!),
                           textAlign: TextAlign.center,
@@ -94,10 +94,5 @@ class ForecastPage extends StatelessWidget {
             }),
       ),
     );
-  }
-
-  String datetimeStringToNewFormat(String date) {
-    DateTime dt = DateTime.parse(date);
-    return DateFormat('EEEE MMM d, yyyy').format(dt).toString();
   }
 }

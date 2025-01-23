@@ -20,9 +20,11 @@ const String locationUrl =
 // visual crossing appId
 const String vcLatLonUrl_1 =
     'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/';
-const String vcLatLonUrl_2 = '?unitGroup=us&include=days';
+const String vcLatLonUrl_2Days = '?unitGroup=us&include=days';
+const String vcLatLonUrl_2Hours = '?unitGroup=us&include=hours';
 const String vcKey = '&key=S5C4BVLDLCF9VK4HREF57Z6WR';
-// To form url: url = '$vcLatLonUrl_1${lat},${lon}$vcLatLonUrl_2$vcKey'
+// To form url for days: url = '$vcLatLonUrl_1${lat},${lon}$vcLatLonUrl_2Days$vcKey'
+// To form url for hours: url = '$vcLatLonUrl_1${lat},${lon}$vcLatLonUrl_2Hours/$dates$vcKey'
 
 // Sunrise & sunset Url
 const String sunrisSunsetUrl =
