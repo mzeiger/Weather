@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:weather/Widgets/weather_widgets.dart';
 import 'package:weather/models/forecast_model.dart';
 
