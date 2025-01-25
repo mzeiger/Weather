@@ -37,6 +37,7 @@ Widget keyInfo(BuildContext context, WeatherModel weather) {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
+          spacing: 8,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             Text(
@@ -51,7 +52,6 @@ Widget keyInfo(BuildContext context, WeatherModel weather) {
               'Feels Like: ${weather.mainFeelsLike}°',
               style: textStyle(18),
             ),
-            const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -59,7 +59,6 @@ Widget keyInfo(BuildContext context, WeatherModel weather) {
                 _windInfo(context, weather),
               ],
             ),
-            const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -183,21 +182,9 @@ Widget _sunsetInfo(BuildContext context, WeatherModel weather) {
 }
 
 Widget header(WeatherModel weather) {
-  return Column(
-    children: [
-      Text(
-        '${weather.name!}, ${weather.sysCountry}',
-        style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-      ),
-      Text(
-        Formulas.getDate(weather.date!, weather.timezone!),
-        style: textStyle(20),
-      ),
-      Text(
-        Formulas.getTime(weather.date!, weather.timezone!),
-        style: textStyle(20),
-      )
-    ],
+  return Text(
+    '${weather.name!}, ${weather.sysCountry}',
+    style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
   );
 }
 
@@ -213,12 +200,8 @@ Widget timeInfo(WeatherModel weather) {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
-                  'Date: ${Formulas.getDate(weather.date!, weather.timezone!)}',
-                  style: textStyle(10)),
-              Text(
-                  'Time: ${Formulas.getTime(weather.date!, weather.timezone!)}',
-                  style: textStyle(10)),
+              Text('Date: ${Formulas.getDate(weather)}', style: textStyle(10)),
+              Text('Time: ${Formulas.getTime(weather)}', style: textStyle(10)),
             ],
           ),
         ),

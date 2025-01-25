@@ -28,4 +28,7 @@ const String vcKey = '&key=S5C4BVLDLCF9VK4HREF57Z6WR';
 
 // Sunrise & sunset Url
 const String sunrisSunsetUrl =
-    'https://api.sunrisesunset.io/json?'; // ad lat={latitude}&lng={longitude}
+    'https://api.sunrisesunset.io/json?'; // add lat={latitude}&lng={longitude}
+
+const String timeZoneUrl =
+    'https://timeapi.io/api/timezone/coordinate?'; // add latitude=-12.4611&longitude=130.8418

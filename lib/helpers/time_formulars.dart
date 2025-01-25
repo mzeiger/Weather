@@ -1,23 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:weather/models/weather_model.dart';
 
 class Formulas {
-  static String getTime(int milliseconds, int timeZoneMilliseconds) {
-    return DateFormat('hh:mm:ss a')
-        .format(DateTime.fromMillisecondsSinceEpoch((milliseconds) * 1000))
-        .toString();
+  static String getTime(WeatherModel weather) {
+    DateTime dt = DateTime.parse(weather.currentLocalTime!);
+    return DateFormat('h:mm a').format(dt);
   }
 
-  static String getSunRiseSunset(int milliseconds, int timeZoneMilliseconds) {
-    return DateFormat('hh:mm:ss a')
-        .format(DateTime.fromMillisecondsSinceEpoch(
-            (milliseconds + timeZoneMilliseconds) * 1000))
-        .toString();
-  }
-
-  static String getDate(int milliseconds, int timeZoneMilliseconds) {
-    return DateFormat('EEEE, MMM dd, yyyy')
-        .format(DateTime.fromMillisecondsSinceEpoch((milliseconds) * 1000));
+  static String getDate(WeatherModel weather) {
+    DateTime dt = DateTime.parse(weather.currentLocalTime!);
+    return DateFormat('EEEE, MMM dd, yyyy').format(dt);
   }
 
   static Color temperatureColor(double? temp) {

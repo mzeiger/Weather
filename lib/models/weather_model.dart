@@ -15,7 +15,11 @@ class WeatherModel {
   String? name; // the city name
   int? timezone;
   int? date;
+  // the next come from GeoModel
   String? sunrise, sunset;
+  // the next come from the TimeZone API and TimeZoneModel
+  String? currentLocalTime;
+  bool? hasDaylightSaving, isDayLightSavingActive;
 
   WeatherModel(
       {weatherMain,
@@ -30,23 +34,28 @@ class WeatherModel {
       windSpeed,
       windDeg,
       windGust,
-      sysSunrise,
-      sysSunSet,
+      sysSunrise, // not used
+      sysSunSet, // not used
       sysCountry,
       name,
       timezone,
       coordLatitude,
       coordLongitude,
       date,
+      // the next come from GeoModel
       sunrise,
-      sunset});
+      sunset,
+      // the next come from the TimeZone API and TimeZoneModel
+      currentLocalTime,
+      hasDayLightSavingTime,
+      isDayLightSavingTimeActive});
 
   Future<Map<String, dynamic>> getWeatherByZip(String zipCode) async {
     try {
       String url = '${urlPrefix}zip=$zipCode&appid=$appId';
-      if (kDebugMode) {
-        print(url);
-      }
+      // if (kDebugMode) {
+      //   print(url);
+      // }
       final response = await http.get(Uri.parse(url));
       Map<String, dynamic> dataMap = jsonDecode(response.body);
       return dataMap;
@@ -61,9 +70,9 @@ class WeatherModel {
   Future<Map<String, dynamic>> getWeatherByCity(String cityCode) async {
     try {
       String url = '${urlPrefix}q=$cityCode&appid=$appId';
-      if (kDebugMode) {
-        print(url);
-      }
+      // if (kDebugMode) {
+      //   print(url);
+      // }
       final response = await http.get(Uri.parse(url));
       Map<String, dynamic> dataMap = jsonDecode(response.body);
       return dataMap;
@@ -80,14 +89,14 @@ class WeatherModel {
     try {
       String url = '${urlPrefix}lat=$latitude&lon=$longitude&appid=$appId';
       //String url = '$vcLatLonUrl_1$latitude,$longitude$keyForUrl';
-      if (kDebugMode) {
-        print(url);
-      }
+      // if (kDebugMode) {
+      //   print(url);
+      // }
       final response = await http.get(Uri.parse(url));
       Map<String, dynamic> dataMap = jsonDecode(response.body);
-      if (kDebugMode) {
-        print(dataMap);
-      }
+      // if (kDebugMode) {
+      //   print(dataMap);
+      // }
       return dataMap;
     } catch (e) {
       if (kDebugMode) {

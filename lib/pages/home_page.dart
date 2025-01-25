@@ -4,6 +4,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:weather/helpers/location_permission.dart';
 import 'package:weather/models/geo_model.dart';
+import 'package:weather/models/timezone_model.dart';
 import 'package:weather/models/weather_model.dart';
 import 'package:weather/pages/gps_page.dart';
 import 'package:weather/pages/wait_page.dart';
@@ -23,6 +24,7 @@ class _HomePageState extends State<HomePage> {
   final _zipRegExp = RegExp(r'\d\d\d\d\d');
   WeatherModel weatherModel = WeatherModel();
   GeoModel geoModel = GeoModel();
+  TimeZoneModel timeZoneModel = TimeZoneModel();
   bool _canGetWeatherByCurrentLocation = true;
 
   @override
@@ -61,18 +63,17 @@ class _HomePageState extends State<HomePage> {
                   ]),
             ),
             child: Column(
+              spacing: 15,
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 const SizedBox(height: 20),
                 zipcodeInput(),
-                const SizedBox(height: 10),
                 cityInput(),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10),
                   child: Divider(thickness: 5),
                 ),
                 weatherByCurrentLocation(),
-                const SizedBox(height: 10),
                 gpsButton(),
               ],
             ),
@@ -137,14 +138,20 @@ class _HomePageState extends State<HomePage> {
                         .getSunriseSunset(weatherResponse['coord']['lat'],
                             weatherResponse['coord']['lon'])
                         .then((geo) {
-                      WeatherModel weather = populateWeatherModel(
-                          weatherModel, weatherResponse, geo);
-                      if (mounted) {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) => WeatherPage(weather: weather)));
-                      }
+                      timeZoneModel
+                          .getTimeZoneDateTime(weatherResponse['coord']['lat'],
+                              weatherResponse['coord']['lon'])
+                          .then((tz) {
+                        WeatherModel weather = populateWeatherModel(
+                            weatherModel, weatherResponse, geo, tz);
+                        if (mounted) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) =>
+                                      WeatherPage(weather: weather)));
+                        }
+                      });
                     });
                   }
                 });
@@ -212,14 +219,20 @@ class _HomePageState extends State<HomePage> {
                         .getSunriseSunset(weatherResponse['coord']['lat'],
                             weatherResponse['coord']['lon'])
                         .then((geo) {
-                      WeatherModel weather = populateWeatherModel(
-                          weatherModel, weatherResponse, geo);
-                      if (mounted) {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) => WeatherPage(weather: weather)));
-                      }
+                      timeZoneModel
+                          .getTimeZoneDateTime(weatherResponse['coord']['lat'],
+                              weatherResponse['coord']['lon'])
+                          .then((tz) {
+                        WeatherModel weather = populateWeatherModel(
+                            weatherModel, weatherResponse, geo, tz);
+                        if (mounted) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) =>
+                                      WeatherPage(weather: weather)));
+                        }
+                      });
                     });
                   }
                 });
@@ -249,53 +262,59 @@ class _HomePageState extends State<HomePage> {
               }
               Navigator.push(
                   context, MaterialPageRoute(builder: (_) => const WaitPage()));
-              Geolocator.getCurrentPosition().then(
-                (currentPosition) {
-                  // now have lat and long
-                  geoModel
-                      .getLocationByLatLon(
-                          currentPosition.latitude, currentPosition.longitude)
-                      .then(
-                    (geoMap) {
-                      geoModel
-                          .getSunriseSunset(currentPosition.latitude,
-                              currentPosition.longitude)
-                          .then(
-                        (sun) {
-                          GeoModel geo =
-                              populateGeoModel(geoModel, geoMap, sun);
-                          weatherModel
-                              .getWeatherByCurrentLoaction(
-                                  currentPosition.latitude,
-                                  currentPosition.longitude)
-                              .then(
-                            (weatherResponse) {
-                              if (weatherResponse['cod'] != 200) {
-                                if (mounted) {
-                                  showErrorDialog(context,
-                                      "${weatherResponse['cod']}: ${weatherResponse['message']}");
+              Geolocator.getCurrentPosition().then((currentPosition) {
+                // now have lat and long
+                timeZoneModel
+                    .getTimeZoneDateTime(
+                        currentPosition.latitude, currentPosition.longitude)
+                    .then(
+                  (tz) {
+                    geoModel
+                        .getLocationByLatLon(
+                            currentPosition.latitude, currentPosition.longitude)
+                        .then(
+                      (geoMap) {
+                        geoModel
+                            .getSunriseSunset(currentPosition.latitude,
+                                currentPosition.longitude)
+                            .then(
+                          (sun) {
+                            GeoModel geo =
+                                populateGeoModel(geoModel, geoMap, sun);
+                            weatherModel
+                                .getWeatherByCurrentLoaction(
+                                    currentPosition.latitude,
+                                    currentPosition.longitude)
+                                .then(
+                              (weatherResponse) {
+                                if (weatherResponse['cod'] != 200) {
+                                  if (mounted) {
+                                    showErrorDialog(context,
+                                        "${weatherResponse['cod']}: ${weatherResponse['message']}");
+                                  }
+                                } else {
+                                  WeatherModel weather = populateWeatherModel(
+                                      weatherModel, weatherResponse, sun, tz);
+                                  if (mounted) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => WeatherLLPage(
+                                            geoModel: geo, weather: weather),
+                                      ),
+                                    );
+                                  }
                                 }
-                              } else {
-                                WeatherModel weather = populateWeatherModel(
-                                    weatherModel, weatherResponse, sun);
-                                if (mounted) {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (_) => WeatherLLPage(
-                                          geoModel: geo, weather: weather),
-                                    ),
-                                  );
-                                }
-                              }
-                            },
-                          );
-                        },
-                      );
-                    },
+                              },
+                            );
+                          },
+                        );
+                      },
+                    );
+                  },
+                );
+              } // xxx
                   );
-                },
-              );
             },
             style: const ButtonStyle(
                 backgroundColor: WidgetStatePropertyAll(Colors.blue)),
@@ -327,7 +346,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   WeatherModel populateWeatherModel(
-      WeatherModel model, Map<String, dynamic> data, Map<String, dynamic> geo) {
+      WeatherModel model,
+      Map<String, dynamic> data,
+      Map<String, dynamic> geo,
+      Map<String, dynamic> tz) {
     try {
       model.weatherMain = data['weather'][0]['main'] ?? '';
       model.weatherDescription = data['weather'][0]['description'] ?? '';
@@ -358,6 +380,9 @@ class _HomePageState extends State<HomePage> {
       model.date = data['dt'] ?? -1000000000000;
       model.sunrise = geo['results']['sunrise'];
       model.sunset = geo['results']['sunset'];
+      model.currentLocalTime = tz['currentLocalTime'];
+      model.hasDaylightSaving = tz['hasDayLightSaving'];
+      model.isDayLightSavingActive = tz['isDayLightSavingActive'];
     } catch (e) {
       // print(e.toString());
     }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:weather/Widgets/weather_widgets.dart';
 import 'package:weather/helpers/state_abreviations.dart';
+import 'package:weather/helpers/time_formulars.dart';
 import 'package:weather/models/geo_model.dart';
 import 'package:weather/models/weather_model.dart';
 
@@ -45,11 +46,14 @@ class WeatherLLPage extends StatelessWidget {
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
-                spacing: 10,
+                spacing: 5,
                 children: [
-                  const SizedBox(height: 5),
                   _location(),
                   imageFromOpenWeather(weather),
+                  Text(
+                    '${Formulas.getDate(weather)}  ${Formulas.getTime(weather)}',
+                    style: const TextStyle(fontSize: 18),
+                  ),
                   keyInfo(context, weather),
                   forecastButton(
                       context, weather.coordLatitude!, weather.coordLongitude!)
