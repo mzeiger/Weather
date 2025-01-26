@@ -428,9 +428,13 @@ class _HomePageState extends State<HomePage> {
             child: TextButton(
               style: const ButtonStyle(
                   backgroundColor: WidgetStatePropertyAll(Colors.lightBlue)),
-              onPressed: () => Navigator.of(context)
-                ..pop()
-                ..pop(),
+              onPressed: () {
+                Navigator.of(context)
+                  ..pop()
+                  ..pop();
+                FocusScope.of(context)
+                    .unfocus(); // This will dismiss the keyboard.
+              },
               child: const Text(
                 'Close',
                 style: TextStyle(fontSize: 15, color: Colors.white),
