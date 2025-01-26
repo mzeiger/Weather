@@ -428,7 +428,9 @@ class _HomePageState extends State<HomePage> {
             child: TextButton(
               style: const ButtonStyle(
                   backgroundColor: WidgetStatePropertyAll(Colors.lightBlue)),
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () => Navigator.of(context)
+                ..pop()
+                ..pop(),
               child: const Text(
                 'Close',
                 style: TextStyle(fontSize: 15, color: Colors.white),
