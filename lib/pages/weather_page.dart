@@ -21,7 +21,9 @@ class WeatherPage extends StatelessWidget {
             centerTitle: true,
             backgroundColor: Colors.lightBlue,
             leading: IconButton(
-              onPressed: () => Navigator.pop(context),
+              onPressed: () => Navigator.of(context)
+                ..pop()
+                ..pop(),
               icon: const Icon(
                 Icons.arrow_back,
               ),

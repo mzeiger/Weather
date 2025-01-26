@@ -125,6 +125,8 @@ class _HomePageState extends State<HomePage> {
             onPressed: () {
               if (_zipFormKey.currentState!.validate()) {
                 FocusScope.of(context).unfocus();
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (_) => const WaitPage()));
                 weatherModel
                     .getWeatherByZip(zipController.text)
                     .then((weatherResponse) {
@@ -206,6 +208,8 @@ class _HomePageState extends State<HomePage> {
             onPressed: () {
               if (_cityFormKey.currentState!.validate()) {
                 FocusScope.of(context).unfocus();
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (_) => const WaitPage()));
                 weatherModel
                     .getWeatherByCity(cityController.text)
                     .then((weatherResponse) {
