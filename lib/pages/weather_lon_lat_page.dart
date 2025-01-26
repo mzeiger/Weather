@@ -24,9 +24,13 @@ class WeatherLLPage extends StatelessWidget {
             centerTitle: true,
             backgroundColor: Colors.lightBlue,
             leading: IconButton(
-              onPressed: () => Navigator.of(context)
-                ..pop()
-                ..pop(),
+              onPressed: () {
+                Navigator.of(context)
+                  ..pop()
+                  ..pop();
+                FocusScope.of(context)
+                    .unfocus(); // This will dismiss the keyboard.
+              },
               icon: const Icon(
                 Icons.arrow_back,
               ),
