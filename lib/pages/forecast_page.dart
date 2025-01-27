@@ -115,7 +115,7 @@ class ForecastPage extends StatelessWidget {
               color: Colors.amber[50],
               child: const Padding(
                 padding: EdgeInsets.all(8.0),
-                child: Text('Double-tap on a day to get it\'s hourly forecast',
+                child: Text('Double-tap on a day to get its hourly forecast',
                     textAlign: TextAlign.center),
               ),
             ),

@@ -412,36 +412,39 @@ class _HomePageState extends State<HomePage> {
     showDialog(
       barrierDismissible: false,
       context: context,
-      builder: (context) => SimpleDialog(
-        title: const Text(
-          'ERROR',
-          style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
-        ),
-        children: [
-          Text(
-            message,
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 20),
+      builder: (context) => PopScope(
+        canPop: false,
+        child: SimpleDialog(
+          title: const Text(
+            'ERROR',
+            style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
           ),
-          Padding(
-            padding: const EdgeInsets.all(60.0),
-            child: TextButton(
-              style: const ButtonStyle(
-                  backgroundColor: WidgetStatePropertyAll(Colors.lightBlue)),
-              onPressed: () {
-                Navigator.of(context)
-                  ..pop()
-                  ..pop();
-                FocusScope.of(context)
-                    .unfocus(); // This will dismiss the keyboard.
-              },
-              child: const Text(
-                'Close',
-                style: TextStyle(fontSize: 15, color: Colors.white),
+          children: [
+            Text(
+              message,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 20),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(60.0),
+              child: TextButton(
+                style: const ButtonStyle(
+                    backgroundColor: WidgetStatePropertyAll(Colors.lightBlue)),
+                onPressed: () {
+                  Navigator.of(context)
+                    ..pop()
+                    ..pop();
+                  FocusScope.of(context)
+                      .unfocus(); // This will dismiss the keyboard.
+                },
+                child: const Text(
+                  'Close',
+                  style: TextStyle(fontSize: 15, color: Colors.white),
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
