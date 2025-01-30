@@ -67,8 +67,29 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 const SizedBox(height: 20),
-                zipcodeInput(),
-                cityInput(),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                        color: Color.fromRGBO(156, 156, 199, 0.808)),
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(8, 12, 8, 8),
+                      child: zipcodeInput(),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                      decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          color: Color.fromRGBO(156, 156, 199, 0.808)),
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(8, 12, 8, 8),
+                        child: cityInput(),
+                      )),
+                ),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10),
                   child: Divider(thickness: 5),
