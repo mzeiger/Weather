@@ -50,13 +50,34 @@ class WeatherModel {
       hasDayLightSavingTime,
       isDayLightSavingTimeActive});
 
+  // Future<Map<String, dynamic>> getWeatherByZip(String zipCode) async {
+  //   try {
+  //     String url = '${urlPrefix}zip=$zipCode&appid=$appId';
+  //     // if (kDebugMode) {
+  //     //   print(url);
+  //     // }
+  //     final response = await http.get(Uri.parse(url));
+  //     Map<String, dynamic> dataMap = jsonDecode(response.body);
+  //     return dataMap;
+  //   } catch (e) {
+  //     if (kDebugMode) {
+  //       print('Exception: $e');
+  //     }
+  //     return {'x', e} as Map<String, dynamic>;
+  //   }
+  // }
+
   Future<Map<String, dynamic>> getWeatherByZip(String zipCode) async {
+    Map<String, dynamic> queryParams = {
+      "zip": zipCode,
+      "appid": appId,
+      "units": "imperial"
+    };
+
     try {
-      String url = '${urlPrefix}zip=$zipCode&appid=$appId';
-      // if (kDebugMode) {
-      //   print(url);
-      // }
-      final response = await http.get(Uri.parse(url));
+      String url = urlPrefix2;
+      final response =
+          await http.get(Uri.parse(url).replace(queryParameters: queryParams));
       Map<String, dynamic> dataMap = jsonDecode(response.body);
       return dataMap;
     } catch (e) {
@@ -67,13 +88,33 @@ class WeatherModel {
     }
   }
 
+  // Future<Map<String, dynamic>> getWeatherByCity(String cityCode) async {
+  //   try {
+  //     String url = '${urlPrefix}q=$cityCode&appid=$appId';
+  //     // if (kDebugMode) {
+  //     //   print(url);
+  //     // }
+  //     final response = await http.get(Uri.parse(url));
+  //     Map<String, dynamic> dataMap = jsonDecode(response.body);
+  //     return dataMap;
+  //   } catch (e) {
+  //     if (kDebugMode) {
+  //       print('Exception: $e');
+  //     }
+  //     return {'x', e} as Map<String, dynamic>;
+  //   }
+  // }
+
   Future<Map<String, dynamic>> getWeatherByCity(String cityCode) async {
     try {
-      String url = '${urlPrefix}q=$cityCode&appid=$appId';
-      // if (kDebugMode) {
-      //   print(url);
-      // }
-      final response = await http.get(Uri.parse(url));
+      Map<String, dynamic> queryParams = {
+        "q": cityCode,
+        "appid": appId,
+        "units": "imperial"
+      };
+      String url = urlPrefix2;
+      final response =
+          await http.get(Uri.parse(url).replace(queryParameters: queryParams));
       Map<String, dynamic> dataMap = jsonDecode(response.body);
       return dataMap;
     } catch (e) {
@@ -87,16 +128,17 @@ class WeatherModel {
   Future<Map<String, dynamic>> getWeatherByCurrentLoaction(
       double latitude, double longitude) async {
     try {
-      String url = '${urlPrefix}lat=$latitude&lon=$longitude&appid=$appId';
-      //String url = '$vcLatLonUrl_1$latitude,$longitude$keyForUrl';
-      // if (kDebugMode) {
-      //   print(url);
-      // }
-      final response = await http.get(Uri.parse(url));
+      //String url = '${urlPrefix}lat=$latitude&lon=$longitude&appid=$appId';
+      Map<String, String> queryParams = {
+        "units": "imperial",
+        "appid": appId,
+        "lat": latitude.toString(),
+        "lon": longitude.toString()
+      };
+      String url = urlPrefix2;
+      final response =
+          await http.get(Uri.parse(url).replace(queryParameters: queryParams));
       Map<String, dynamic> dataMap = jsonDecode(response.body);
-      // if (kDebugMode) {
-      //   print(dataMap);
-      // }
       return dataMap;
     } catch (e) {
       if (kDebugMode) {

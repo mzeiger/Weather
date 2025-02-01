@@ -2,6 +2,8 @@
 const String appId = '69e5a529e466a5f77d073075632dbc13';
 const String urlPrefix =
     'https://api.openweathermap.org/data/2.5/weather?units=imperial&';
+
+const String urlPrefix2 = "https://api.openweathermap.org/data/2.5/weather";
 const String zipUrl =
     'https://api.openweathermap.org/data/2.5/weather?appid=69e5a529e466a5f77d073075632dbc13&units=imperial&zip=';
 const String cityUrl =
