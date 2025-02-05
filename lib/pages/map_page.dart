@@ -45,7 +45,7 @@ class _MapPageState extends State<MapPage> {
             spacing: 10,
             children: [
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.75,
+                height: MediaQuery.of(context).size.height,
                 child: FlutterMap(
                     mapController: _mapController,
                     options: MapOptions(
@@ -67,29 +67,29 @@ class _MapPageState extends State<MapPage> {
                       ])
                     ]),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  TextButton(
-                    onPressed: () => _zoom(0),
-                    style:
-                        TextButton.styleFrom(backgroundColor: Colors.blueGrey),
-                    child: const Text(
-                      'Zoom In',
-                      style: TextStyle(fontSize: 20, color: Colors.white),
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () => _zoom(1),
-                    style:
-                        TextButton.styleFrom(backgroundColor: Colors.blueGrey),
-                    child: const Text(
-                      'Zoom Out',
-                      style: TextStyle(fontSize: 20, color: Colors.white),
-                    ),
-                  ),
-                ],
-              )
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              //   children: [
+              //     TextButton(
+              //       onPressed: () => _zoom(0),
+              //       style:
+              //           TextButton.styleFrom(backgroundColor: Colors.blueGrey),
+              //       child: const Text(
+              //         'Zoom In',
+              //         style: TextStyle(fontSize: 20, color: Colors.white),
+              //       ),
+              //     ),
+              //     TextButton(
+              //       onPressed: () => _zoom(1),
+              //       style:
+              //           TextButton.styleFrom(backgroundColor: Colors.blueGrey),
+              //       child: const Text(
+              //         'Zoom Out',
+              //         style: TextStyle(fontSize: 20, color: Colors.white),
+              //       ),
+              //     ),
+              //   ],
+              // )
             ],
           ),
         ),
