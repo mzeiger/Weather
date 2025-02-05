@@ -50,23 +50,6 @@ class WeatherModel {
       hasDayLightSavingTime,
       isDayLightSavingTimeActive});
 
-  // Future<Map<String, dynamic>> getWeatherByZip(String zipCode) async {
-  //   try {
-  //     String url = '${urlPrefix}zip=$zipCode&appid=$appId';
-  //     // if (kDebugMode) {
-  //     //   print(url);
-  //     // }
-  //     final response = await http.get(Uri.parse(url));
-  //     Map<String, dynamic> dataMap = jsonDecode(response.body);
-  //     return dataMap;
-  //   } catch (e) {
-  //     if (kDebugMode) {
-  //       print('Exception: $e');
-  //     }
-  //     return {'x', e} as Map<String, dynamic>;
-  //   }
-  // }
-
   Future<Map<String, dynamic>> getWeatherByZip(String zipCode) async {
     Map<String, dynamic> queryParams = {
       "zip": zipCode,
@@ -87,23 +70,6 @@ class WeatherModel {
       return {'x', e} as Map<String, dynamic>;
     }
   }
-
-  // Future<Map<String, dynamic>> getWeatherByCity(String cityCode) async {
-  //   try {
-  //     String url = '${urlPrefix}q=$cityCode&appid=$appId';
-  //     // if (kDebugMode) {
-  //     //   print(url);
-  //     // }
-  //     final response = await http.get(Uri.parse(url));
-  //     Map<String, dynamic> dataMap = jsonDecode(response.body);
-  //     return dataMap;
-  //   } catch (e) {
-  //     if (kDebugMode) {
-  //       print('Exception: $e');
-  //     }
-  //     return {'x', e} as Map<String, dynamic>;
-  //   }
-  // }
 
   Future<Map<String, dynamic>> getWeatherByCity(String cityCode) async {
     try {

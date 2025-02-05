@@ -7,6 +7,7 @@ import 'package:weather/models/forecast_model.dart';
 import 'package:weather/models/weather_model.dart';
 import 'package:weather/pages/forecast_day_details_page.dart';
 import 'package:weather/pages/forecast_page.dart';
+import 'package:weather/pages/map_page.dart';
 
 Widget imageFromOpenWeather(WeatherModel weather) {
   return Column(
@@ -319,7 +320,32 @@ Widget forecastButton(context, double lat, double lon) {
                       )));
         });
       },
-      child: const Text('Fifteen Day Forecast'));
+      child: const Text(
+        'Fifteen Day Forecast',
+        style: TextStyle(
+          fontSize: 12,
+        ),
+      ));
+}
+
+Widget mapboxButton(context, double lat, double lon) {
+  return ElevatedButton(
+    onPressed: () {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (_) => MapPage(
+                    latitude: lat,
+                    longitude: lon,
+                  )));
+    },
+    child: const Text(
+      'Show Map Location',
+      style: TextStyle(
+        fontSize: 12,
+      ),
+    ),
+  );
 }
 
 String datetimeStringToNewFormat(String date) {

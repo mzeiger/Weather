@@ -53,8 +53,16 @@ class WeatherPage extends StatelessWidget {
                   style: const TextStyle(fontSize: 18),
                 ),
                 keyInfo(context, weather),
-                forecastButton(
-                    context, weather.coordLatitude!, weather.coordLongitude!)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  spacing: 8,
+                  children: [
+                    forecastButton(context, weather.coordLatitude!,
+                        weather.coordLongitude!),
+                    mapboxButton(context, weather.coordLatitude!,
+                        weather.coordLongitude!),
+                  ],
+                )
                 // timeInfo(),
               ],
             ),

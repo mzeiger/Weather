@@ -16,9 +16,6 @@ class TimeZoneModel {
       String url = '${timeZoneUrl}latitude=${lat}&longitude=${lon}';
       final response = await http.get(Uri.parse(url));
       Map<String, dynamic> dataMap = jsonDecode(response.body);
-      if (kDebugMode) {
-        print(dataMap);
-      }
       return dataMap;
     } catch (e) {
       if (kDebugMode) {
