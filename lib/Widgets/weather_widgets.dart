@@ -18,8 +18,21 @@ Widget imageFromOpenWeather(WeatherModel weather) {
           child: Align(
             widthFactor: 0.5,
             heightFactor: 0.5,
-            child: Image.network('${iconUrl + weather.weatherIcon!}@2x.png',
-                width: 200, height: 200),
+            child: weather.weatherIcon == ''
+                ? ClipRRect(
+                    borderRadius: BorderRadius.circular(80),
+                    child: SizedBox.fromSize(
+                      size: const Size.fromRadius(80),
+                      child: Image.asset(
+                        'assets/images/all_weather.jpg',
+                        width: 1500,
+                        height: 1500,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  )
+                : Image.network('${iconUrl + weather.weatherIcon!}@2x.png',
+                    width: 200, height: 200),
           ),
         ),
       ),

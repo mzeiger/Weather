@@ -378,7 +378,7 @@ class _HomePageState extends State<HomePage> {
     try {
       model.weatherMain = data['weather'][0]['main'] ?? '';
       model.weatherDescription = data['weather'][0]['description'] ?? '';
-      model.weatherIcon = data['weather'][0]['icon'];
+      model.weatherIcon = data['weather'][0]['icon'] ?? '';
       model.mainTemmp = data['main']['temp'].toDouble() ?? -1000000000000.0;
       model.mainFeelsLike = data['main']['feels_like'] ?? -0.0;
       model.mainTempMin =
@@ -416,16 +416,16 @@ class _HomePageState extends State<HomePage> {
 
   GeoModel populateGeoModel(
       GeoModel model, Placemark placeMark, Map<String, dynamic> sun) {
-    model.administrativeArea = placeMark.administrativeArea;
-    model.country = placeMark.country;
-    model.isoCountryCode = placeMark.isoCountryCode;
-    model.locality = placeMark.locality;
-    model.postalCode = placeMark.postalCode;
-    model.street = placeMark.street;
-    model.subAdministrativeArea = placeMark.subAdministrativeArea;
-    model.thoroughfare = placeMark.thoroughfare;
-    model.sunrise = sun['results']['sunrise'];
-    model.sunset = sun['results']['sunset'];
+    model.administrativeArea = placeMark.administrativeArea ?? '';
+    model.country = placeMark.country ?? '';
+    model.isoCountryCode = placeMark.isoCountryCode ?? '';
+    model.locality = placeMark.locality ?? '';
+    model.postalCode = placeMark.postalCode ?? '';
+    model.street = placeMark.street ?? '';
+    model.subAdministrativeArea = placeMark.subAdministrativeArea ?? '';
+    model.thoroughfare = placeMark.thoroughfare ?? '';
+    model.sunrise = sun['results']['sunrise'] ?? '';
+    model.sunset = sun['results']['sunset'] ?? '';
     return model;
   }
 
