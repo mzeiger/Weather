@@ -13,7 +13,7 @@ class MapPage extends StatefulWidget {
 
 class _MapPageState extends State<MapPage> {
   final MapController _mapController = MapController();
-  double _zoomLevel = 13.0;
+  final double _zoomLevel = 13.0;
   LatLng? _initialPosition;
 
   @override
@@ -22,13 +22,13 @@ class _MapPageState extends State<MapPage> {
     _initialPosition = LatLng(widget.latitude, widget.longitude);
   }
 
-  void _zoom(int direction) {
-    // if 0 zoom in - if 1 zoom out
-    setState(() {
-      direction == 0 ? _zoomLevel += 1 : _zoomLevel -= 1;
-      _mapController.move(_initialPosition!, _zoomLevel);
-    });
-  }
+  // void _zoom(int direction) {
+  //   // if 0 zoom in - if 1 zoom out
+  //   setState(() {
+  //     direction == 0 ? _zoomLevel += 1 : _zoomLevel -= 1;
+  //     _mapController.move(_initialPosition!, _zoomLevel);
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
