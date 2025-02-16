@@ -2,6 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:weather/models/weather_model.dart';
 
+/// Open Weather Map Time Calcs:
+/// var unixTimeStampInMilliseconds = dtFromOpenWeatherMap;
+/// var tzOffest = timezone_offsetFromOpenWeatherMap;
+/// var UTCdatetimeStamp =
+///         DateTime.fromMillisecondsSinceEpoch(unixTimeStampInMilliseconds*1000, isUtc: true);
+/// localDateTimeStamp = UTCDateTimeStamp.add(Duration(seconds: tzOffset));
+
 class Formulas {
   static String getTime(WeatherModel weather) {
     DateTime dt = DateTime.parse(weather.currentLocalTime!);
