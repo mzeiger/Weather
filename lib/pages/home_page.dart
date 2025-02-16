@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:weather/helpers/location_permission.dart';
@@ -7,7 +8,6 @@ import 'package:weather/models/geo_model.dart';
 import 'package:weather/models/timezone_model.dart';
 import 'package:weather/models/weather_model.dart';
 import 'package:weather/pages/gps_page.dart';
-import 'package:weather/pages/wait_page.dart';
 import 'package:weather/pages/weather_lon_lat_page.dart';
 import 'package:weather/pages/weather_page.dart';
 
@@ -37,6 +37,11 @@ class _HomePageState extends State<HomePage> {
         } else {
           _canGetWeatherByCurrentLocation = false;
         }
+        EasyLoading.instance
+          ..indicatorType = EasyLoadingIndicatorType.dualRing
+          ..indicatorSize = 45.0
+          ..radius = 10
+          ..backgroundColor = Colors.yellow;
       });
     });
   }
@@ -44,59 +49,61 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        resizeToAvoidBottomInset: true,
-        appBar: AppBar(
-          title: const Text('OpenWeather'),
-          backgroundColor: Colors.lightBlue,
-        ),
-        body: SingleChildScrollView(
-          child: Container(
-            height: MediaQuery.sizeOf(context).height,
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    Color.fromARGB(75, 110, 110, 241),
-                    Color.fromARGB(200, 13, 13, 77),
-                  ]),
-            ),
-            child: Column(
-              spacing: 15,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                const SizedBox(height: 20),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                        color: Color.fromRGBO(156, 156, 199, 0.808)),
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(8, 12, 8, 8),
-                      child: zipcodeInput(),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
+      child: SafeArea(
+        child: Scaffold(
+          resizeToAvoidBottomInset: true,
+          appBar: AppBar(
+            title: const Text('OpenWeather'),
+            backgroundColor: Colors.lightBlue,
+          ),
+          body: SingleChildScrollView(
+            child: Container(
+              height: MediaQuery.sizeOf(context).height,
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      Color.fromARGB(75, 110, 110, 241),
+                      Color.fromARGB(200, 13, 13, 77),
+                    ]),
+              ),
+              child: Column(
+                spacing: 15,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  const SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
                       decoration: const BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(20)),
                           color: Color.fromRGBO(156, 156, 199, 0.808)),
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(8, 12, 8, 8),
-                        child: cityInput(),
-                      )),
-                ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  child: Divider(thickness: 5),
-                ),
-                weatherByCurrentLocation(),
-                gpsButton(),
-              ],
+                        child: zipcodeInput(),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                        decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            color: Color.fromRGBO(156, 156, 199, 0.808)),
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(8, 12, 8, 8),
+                          child: cityInput(),
+                        )),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: Divider(thickness: 5),
+                  ),
+                  weatherByCurrentLocation(),
+                  gpsButton(),
+                ],
+              ),
             ),
           ),
         ),
@@ -146,38 +153,49 @@ class _HomePageState extends State<HomePage> {
             onPressed: () {
               if (_zipFormKey.currentState!.validate()) {
                 FocusScope.of(context).unfocus();
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (_) => const WaitPage()));
-                weatherModel
-                    .getWeatherByZip(zipController.text)
-                    .then((weatherResponse) {
-                  if (weatherResponse['cod'] != 200) {
-                    if (mounted) {
-                      showErrorDialog(context,
-                          "${weatherResponse['cod']}: ${weatherResponse['message']}");
-                    }
-                  } else {
-                    geoModel
-                        .getSunriseSunset(weatherResponse['coord']['lat'],
-                            weatherResponse['coord']['lon'])
-                        .then((geo) {
-                      timeZoneModel
-                          .getTimeZoneDateTime(weatherResponse['coord']['lat'],
+                EasyLoading.show(status: 'Loading...');
+                // Navigator.push(context,
+                //     MaterialPageRoute(builder: (_) => const WaitPage()));
+                weatherModel.getWeatherByZip(zipController.text).then(
+                  (weatherResponse) {
+                    if (weatherResponse['cod'] != 200) {
+                      if (mounted) {
+                        showErrorDialog(context,
+                            "${weatherResponse['cod']}: ${weatherResponse['message']}");
+                      }
+                    } else {
+                      geoModel
+                          .getSunriseSunset(weatherResponse['coord']['lat'],
                               weatherResponse['coord']['lon'])
-                          .then((tz) {
-                        WeatherModel weather = populateWeatherModel(
-                            weatherModel, weatherResponse, geo, tz);
-                        if (mounted) {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_) =>
-                                      WeatherPage(weather: weather)));
-                        }
-                      });
-                    });
-                  }
-                });
+                          .then(
+                        (geo) {
+                          timeZoneModel
+                              .getTimeZoneDateTime(
+                                  weatherResponse['coord']['lat'],
+                                  weatherResponse['coord']['lon'])
+                              .then(
+                            (tz) {
+                              WeatherModel weather = populateWeatherModel(
+                                  weatherModel, weatherResponse, geo, tz);
+                              if (mounted) {
+                                EasyLoading.dismiss();
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) =>
+                                        WeatherPage(weather: weather),
+                                  ),
+                                ).whenComplete(() => FocusManager
+                                    .instance.primaryFocus!
+                                    .unfocus());
+                              }
+                            },
+                          );
+                        },
+                      );
+                    }
+                  },
+                );
               }
             },
             style: const ButtonStyle(
@@ -229,38 +247,49 @@ class _HomePageState extends State<HomePage> {
             onPressed: () {
               if (_cityFormKey.currentState!.validate()) {
                 FocusScope.of(context).unfocus();
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (_) => const WaitPage()));
-                weatherModel
-                    .getWeatherByCity(cityController.text)
-                    .then((weatherResponse) {
-                  if (weatherResponse['cod'] != 200) {
-                    if (mounted) {
-                      showErrorDialog(context,
-                          "${weatherResponse['cod']}: ${weatherResponse['message']}");
-                    }
-                  } else {
-                    geoModel
-                        .getSunriseSunset(weatherResponse['coord']['lat'],
-                            weatherResponse['coord']['lon'])
-                        .then((geo) {
-                      timeZoneModel
-                          .getTimeZoneDateTime(weatherResponse['coord']['lat'],
+                EasyLoading.show(status: 'Loading...');
+                // Navigator.push(context,
+                //     MaterialPageRoute(builder: (_) => const WaitPage()));
+                weatherModel.getWeatherByCity(cityController.text).then(
+                  (weatherResponse) {
+                    if (weatherResponse['cod'] != 200) {
+                      if (mounted) {
+                        showErrorDialog(context,
+                            "${weatherResponse['cod']}: ${weatherResponse['message']}");
+                      }
+                    } else {
+                      geoModel
+                          .getSunriseSunset(weatherResponse['coord']['lat'],
                               weatherResponse['coord']['lon'])
-                          .then((tz) {
-                        WeatherModel weather = populateWeatherModel(
-                            weatherModel, weatherResponse, geo, tz);
-                        if (mounted) {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_) =>
-                                      WeatherPage(weather: weather)));
-                        }
-                      });
-                    });
-                  }
-                });
+                          .then(
+                        (geo) {
+                          timeZoneModel
+                              .getTimeZoneDateTime(
+                                  weatherResponse['coord']['lat'],
+                                  weatherResponse['coord']['lon'])
+                              .then(
+                            (tz) {
+                              WeatherModel weather = populateWeatherModel(
+                                  weatherModel, weatherResponse, geo, tz);
+                              if (mounted) {
+                                EasyLoading.dismiss();
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) =>
+                                        WeatherPage(weather: weather),
+                                  ),
+                                ).whenComplete(() => FocusManager
+                                    .instance.primaryFocus!
+                                    .unfocus());
+                              }
+                            },
+                          );
+                        },
+                      );
+                    }
+                  },
+                );
               }
             },
             style: const ButtonStyle(
@@ -285,8 +314,9 @@ class _HomePageState extends State<HomePage> {
               if (!_canGetWeatherByCurrentLocation) {
                 return;
               }
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (_) => const WaitPage()));
+              EasyLoading.show(status: 'Loading...');
+              // Navigator.push(
+              //     context, MaterialPageRoute(builder: (_) => const WaitPage()));
               Geolocator.getCurrentPosition().then((currentPosition) {
                 // now have lat and long
                 timeZoneModel
@@ -321,13 +351,16 @@ class _HomePageState extends State<HomePage> {
                                   WeatherModel weather = populateWeatherModel(
                                       weatherModel, weatherResponse, sun, tz);
                                   if (mounted) {
+                                    EasyLoading.dismiss();
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                         builder: (_) => WeatherLLPage(
                                             geoModel: geo, weather: weather),
                                       ),
-                                    );
+                                    ).whenComplete(() => FocusManager
+                                        .instance.primaryFocus!
+                                        .unfocus());
                                   }
                                 }
                               },
@@ -452,9 +485,8 @@ class _HomePageState extends State<HomePage> {
                 style: const ButtonStyle(
                     backgroundColor: WidgetStatePropertyAll(Colors.lightBlue)),
                 onPressed: () {
-                  Navigator.of(context)
-                    ..pop()
-                    ..pop();
+                  Navigator.of(context).pop();
+
                   FocusScope.of(context)
                       .unfocus(); // This will dismiss the keyboard.
                 },

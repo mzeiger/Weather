@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:weather/pages/home_page.dart';
 
 void main() async {
@@ -18,7 +19,9 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const HomePage(),
+      home: const FlutterEasyLoading(
+        child: HomePage(),
+      ),
     );
   }
 }
