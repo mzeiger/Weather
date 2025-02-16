@@ -154,12 +154,11 @@ class _HomePageState extends State<HomePage> {
               if (_zipFormKey.currentState!.validate()) {
                 FocusScope.of(context).unfocus();
                 EasyLoading.show(status: 'Loading...');
-                // Navigator.push(context,
-                //     MaterialPageRoute(builder: (_) => const WaitPage()));
                 weatherModel.getWeatherByZip(zipController.text).then(
                   (weatherResponse) {
                     if (weatherResponse['cod'] != 200) {
                       if (mounted) {
+                        EasyLoading.dismiss();
                         showErrorDialog(context,
                             "${weatherResponse['cod']}: ${weatherResponse['message']}");
                       }
@@ -248,12 +247,11 @@ class _HomePageState extends State<HomePage> {
               if (_cityFormKey.currentState!.validate()) {
                 FocusScope.of(context).unfocus();
                 EasyLoading.show(status: 'Loading...');
-                // Navigator.push(context,
-                //     MaterialPageRoute(builder: (_) => const WaitPage()));
                 weatherModel.getWeatherByCity(cityController.text).then(
                   (weatherResponse) {
                     if (weatherResponse['cod'] != 200) {
                       if (mounted) {
+                        EasyLoading.dismiss();
                         showErrorDialog(context,
                             "${weatherResponse['cod']}: ${weatherResponse['message']}");
                       }
@@ -315,8 +313,6 @@ class _HomePageState extends State<HomePage> {
                 return;
               }
               EasyLoading.show(status: 'Loading...');
-              // Navigator.push(
-              //     context, MaterialPageRoute(builder: (_) => const WaitPage()));
               Geolocator.getCurrentPosition().then((currentPosition) {
                 // now have lat and long
                 timeZoneModel
