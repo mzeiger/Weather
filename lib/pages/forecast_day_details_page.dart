@@ -17,39 +17,47 @@ class DayDetailsForForecast extends StatelessWidget {
           title: Text(datetimeStringToNewFormat(date)),
           backgroundColor: Colors.lightBlue,
         ),
-        body: Center(
-          child: ListView.builder(
-            itemCount: dayForecasts.length,
-            itemBuilder: (BuildContext context, int index) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: Card(
-                  color: Colors.lightBlueAccent,
-                  elevation: 8,
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                        child: Text(
-                          timeStringToNewFormat(dayForecasts[index].datetime!),
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                              color: Colors.purple, fontSize: 16),
+        body: DecoratedBox(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage('assets/images/pexels-pixabay-314726.jpg'),
+                fit: BoxFit.cover),
+          ),
+          child: Center(
+            child: ListView.builder(
+              itemCount: dayForecasts.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Card(
+                    color: const Color.fromARGB(120, 64, 195, 255),
+                    elevation: 8,
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                          child: Text(
+                            timeStringToNewFormat(
+                                dayForecasts[index].datetime!),
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                                color: Colors.purple, fontSize: 16),
+                          ),
                         ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Text('Temp: ${dayForecasts[index].temp}'),
-                          Text('Humidity ${dayForecasts[index].humidity}')
-                        ],
-                      ),
-                      Text('${dayForecasts[index].conditions}')
-                    ],
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text('Temp: ${dayForecasts[index].temp}'),
+                            Text('Humidity ${dayForecasts[index].humidity}')
+                          ],
+                        ),
+                        Text('${dayForecasts[index].conditions}')
+                      ],
+                    ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
         ),
       ),

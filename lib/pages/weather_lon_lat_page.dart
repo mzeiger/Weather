@@ -15,25 +15,20 @@ class WeatherLLPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: SafeArea(
-        child: Scaffold(
-          appBar: AppBar(
-            // automaticallyImplyLeading: false,
-            title: const Text('Weather Details'),
-            centerTitle: true,
-            backgroundColor: Colors.lightBlue,
-          ),
-          body: Container(
+      child: Scaffold(
+        appBar: AppBar(
+          // automaticallyImplyLeading: false,
+          title: const Text('Weather Details'),
+          centerTitle: true,
+          backgroundColor: Colors.lightBlue,
+        ),
+        body: DecoratedBox(
+          decoration: const BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage('assets/images/pexels-pixabay-314726.jpg'),
+                  fit: BoxFit.cover)),
+          child: SizedBox(
             height: MediaQuery.sizeOf(context).height,
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    Color.fromARGB(55, 110, 110, 241),
-                    Color.fromARGB(120, 13, 13, 77),
-                  ]),
-            ),
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,

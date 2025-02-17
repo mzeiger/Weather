@@ -49,25 +49,22 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: SafeArea(
-        child: Scaffold(
-          resizeToAvoidBottomInset: true,
-          appBar: AppBar(
-            title: const Text('OpenWeather'),
-            backgroundColor: Colors.lightBlue,
-          ),
-          body: SingleChildScrollView(
-            child: Container(
-              height: MediaQuery.sizeOf(context).height,
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      Color.fromARGB(75, 110, 110, 241),
-                      Color.fromARGB(200, 13, 13, 77),
-                    ]),
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        appBar: AppBar(
+          title: const Text('OpenWeather'),
+          backgroundColor: Colors.lightBlue,
+        ),
+        body: SingleChildScrollView(
+          child: DecoratedBox(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/images/pexels-pixabay-314726.jpg"),
+                fit: BoxFit.cover,
               ),
+            ),
+            child: SizedBox(
+              height: MediaQuery.sizeOf(context).height,
               child: Column(
                 spacing: 15,
                 mainAxisAlignment: MainAxisAlignment.start,

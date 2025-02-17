@@ -20,39 +20,46 @@ class WeatherPage extends StatelessWidget {
             centerTitle: true,
             backgroundColor: Colors.lightBlue,
           ),
-          body: Container(
-            height: MediaQuery.sizeOf(context).height,
+          body: DecoratedBox(
             decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    Color.fromARGB(55, 110, 110, 241),
-                    Color.fromARGB(120, 13, 13, 77),
-                  ]),
+              image: DecorationImage(
+                  image: AssetImage('assets/images/pexels-pixabay-314726.jpg'),
+                  fit: BoxFit.cover),
             ),
-            child: Column(
-              spacing: 8,
-              children: <Widget>[
-                header(weather),
-                imageFromOpenWeather(weather),
-                Text(
-                  '${Formulas.getDate(weather)}  ${Formulas.getTime(weather)}',
-                  style: const TextStyle(fontSize: 18),
-                ),
-                keyInfo(context, weather),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  spacing: 8,
-                  children: [
-                    forecastButton(context, weather.coordLatitude!,
-                        weather.coordLongitude!),
-                    mapboxButton(context, weather.coordLatitude!,
-                        weather.coordLongitude!),
-                  ],
-                )
-                // timeInfo(),
-              ],
+            child: SizedBox(
+              height: MediaQuery.sizeOf(context).height,
+              // decoration: const BoxDecoration(
+              //   gradient: LinearGradient(
+              //       begin: Alignment.topLeft,
+              //       end: Alignment.bottomRight,
+              //       colors: [
+              //         Color.fromARGB(55, 110, 110, 241),
+              //         Color.fromARGB(120, 13, 13, 77),
+              //       ]),
+              // ),
+              child: Column(
+                spacing: 8,
+                children: <Widget>[
+                  header(weather),
+                  imageFromOpenWeather(weather),
+                  Text(
+                    '${Formulas.getDate(weather)}  ${Formulas.getTime(weather)}',
+                    style: const TextStyle(fontSize: 18),
+                  ),
+                  keyInfo(context, weather),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    spacing: 8,
+                    children: [
+                      forecastButton(context, weather.coordLatitude!,
+                          weather.coordLongitude!),
+                      mapboxButton(context, weather.coordLatitude!,
+                          weather.coordLongitude!),
+                    ],
+                  )
+                  // timeInfo(),
+                ],
+              ),
             ),
           ),
         ),
