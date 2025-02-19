@@ -75,7 +75,7 @@ class _HomePageState extends State<HomePage> {
                     child: Container(
                       decoration: const BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(20)),
-                          color: Color.fromRGBO(156, 156, 199, 0.808)),
+                          color: Color.fromRGBO(156, 156, 199, 0.37)),
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(8, 12, 8, 8),
                         child: zipcodeInput(),
@@ -87,7 +87,7 @@ class _HomePageState extends State<HomePage> {
                     child: Container(
                         decoration: const BoxDecoration(
                             borderRadius: BorderRadius.all(Radius.circular(20)),
-                            color: Color.fromRGBO(156, 156, 199, 0.808)),
+                            color: Color.fromRGBO(156, 156, 199, 0.37)),
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(8, 12, 8, 8),
                           child: cityInput(),
