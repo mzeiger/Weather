@@ -28,15 +28,6 @@ class WeatherPage extends StatelessWidget {
             ),
             child: SizedBox(
               height: MediaQuery.sizeOf(context).height,
-              // decoration: const BoxDecoration(
-              //   gradient: LinearGradient(
-              //       begin: Alignment.topLeft,
-              //       end: Alignment.bottomRight,
-              //       colors: [
-              //         Color.fromARGB(55, 110, 110, 241),
-              //         Color.fromARGB(120, 13, 13, 77),
-              //       ]),
-              // ),
               child: Column(
                 spacing: 8,
                 children: <Widget>[
