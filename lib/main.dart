@@ -8,7 +8,6 @@ void main() async {
       .ensureInitialized(); // Ensure Flutter bindings are initialized
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
   ]);
   runApp(const MyApp());
 }
